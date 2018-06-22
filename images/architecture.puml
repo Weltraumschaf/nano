@@ -1,0 +1,22 @@
+@startuml
+skinparam componentStyle uml2
+
+package de.weltraumschaf.nano {
+    [de.weltraumschaf.nano.api] as api
+    [de.weltraumschaf.nano.container] as container
+    container ..> api
+}
+
+package de.weltraumschaf.nano.example <<application>> {
+    package de.weltraumschaf.nano.example.module-one <<module>> {
+        [de.weltraumschaf.nano.example.module-one.api] <<api>> as m1api
+        [de.weltraumschaf.nano.example.module-one.impl] <<implementation>> as m1impl
+        m1api .> api
+        m1impl ..> m1api
+    }
+
+    [de.weltraumschaf.nano.example] as app
+    app ..> container
+}
+
+@enduml

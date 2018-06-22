@@ -31,8 +31,9 @@
     </properties>
 
     <modules>
-        <module>module-api</module>
-        <module>module-container</module>
+        <module>nano-api</module>
+        <module>nano-container</module>
+        <module>nano-example-app</module>
     </modules>
 
     <dependencyManagement>
