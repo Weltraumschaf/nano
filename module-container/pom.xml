@@ -17,6 +17,11 @@
 
     <name>Nano :: Container</name>
 
+    <properties>
+        <project.bin.executable>nanod</project.bin.executable>
+        <project.build.mainClass>de.weltraumschaf.nano.container.Main</project.build.mainClass>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>de.weltraumschaf.commons</groupId>
@@ -37,4 +42,107 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>${project.main.resources.directory}</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+
+            <resource>
+                <directory>${project.main.resources.directory}</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+
+                <configuration>
+                    <createDependencyReducedPom>true
+                    </createDependencyReducedPom>
+                    <transformers>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <mainClass>${project.build.mainClass}</mainClass>
+                        </transformer>
+                    </transformers>
+                    <!-- exclude signed Manifests -->
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>${project.build.mainClass}</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+
+                <executions>
+                    <execution>
+                        <id>generate-binary</id>
+                        <phase>pre-integration-test</phase>
+
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+
+                        <configuration>
+                            <target>
+                                <concat destfile="${project.build.directory}/${project.bin.executable}"
+                                        binary="yes">
+                                    <fileset
+                                            file="${project.main.scripts.directory}/${project.bin.executable}.sh"/>
+                                    <fileset
+                                            file="${project.build.directory}/${project.build.finalName}.jar"/>
+                                </concat>
+                                <chmod perm="ugo+rx">
+                                    <fileset
+                                            file="${project.build.directory}/${project.bin.executable}"/>
+                                </chmod>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
