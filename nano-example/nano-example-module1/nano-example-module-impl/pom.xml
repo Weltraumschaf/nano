@@ -7,22 +7,22 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>de.weltraumschaf.nano</groupId>
-        <artifactId>nano-reactor</artifactId>
+        <groupId>de.weltraumschaf.nano.example</groupId>
+        <artifactId>nano-example-module1</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>nano-container</artifactId>
+    <artifactId>nano-example-module1-impl</artifactId>
     <packaging>jar</packaging>
 
-    <name>Nano :: Container</name>
+    <name>Nano :: Example :: Module 1 :: Implementation</name>
 
     <dependencies>
         <dependency>
-            <groupId>de.weltraumschaf.commons</groupId>
-            <artifactId>validate</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>nano-example-module1-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

@@ -6,12 +6,12 @@ import org.slf4j.LoggerFactory;
 /**
  * @since 1.0.0
  */
-final class Container {
+public final class Container {
     private static Logger LOG = LoggerFactory.getLogger( Container.class );
 
     private volatile boolean running = true;
 
-    void start() {
+    public void start() {
         LOG.info("Container starts...");
 
         while (running) {
@@ -25,7 +25,7 @@ final class Container {
         }
     }
 
-    void stop() {
+    public void stop() {
         LOG.info("Container is stopping...");
         running = false;
         LOG.info("Container stopped.");
