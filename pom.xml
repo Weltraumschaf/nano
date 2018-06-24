@@ -28,6 +28,8 @@
         <hamcrest-junit.version>2.0.0.0</hamcrest-junit.version>
         <javax.mail.version>1.5.5</javax.mail.version>
         <ST4.version>4.0.8</ST4.version>
+        <slf4j-api.version>1.7.25</slf4j-api.version>
+        <logback-classic.version>1.1.3</logback-classic.version>
     </properties>
 
     <modules>
@@ -63,7 +65,16 @@
                 <artifactId>ST4</artifactId>
                 <version>${ST4.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback-classic.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
