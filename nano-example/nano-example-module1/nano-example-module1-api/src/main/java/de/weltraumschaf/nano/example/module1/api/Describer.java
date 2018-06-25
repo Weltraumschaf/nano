@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- *
+ * Describes this module.
  */
 public final class Describer implements ModuleDescriber {
     @Override
