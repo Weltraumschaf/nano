@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
+ * This is the main component which manages the modules and its services.
+ *
  * @since 1.0.0
  */
 public final class Container {
@@ -18,6 +20,12 @@ public final class Container {
     private volatile boolean stopped;
     private Services services;
 
+    /**
+     * Start the container.
+     * <p>
+     * This method blocks and does not return, until {@link #stop() contianer is stopped} by an other thread.
+     * </p>
+     */
     public void start() {
         LOG.info("Container starts...");
         running = true;
@@ -32,7 +40,9 @@ public final class Container {
         stopped = true;
     }
 
-
+    /**
+     * Stops the services.
+     */
     public void stop() {
         if (!running) {
             throw new IllegalStateException("Container never started!");

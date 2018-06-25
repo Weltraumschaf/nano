@@ -12,6 +12,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
+ * Delegates the life cycle to all contained services.
+ *
  * @since 1.0.0
  */
 final class Services {
@@ -19,17 +21,28 @@ final class Services {
     private final ExecutorService pool = Executors.newFixedThreadPool(10);
     private final Collection<Service> services;
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param services not {@code null}, defensive copied
+     */
     Services(final Collection<Service> services) {
         super();
         this.services = new ArrayList<>(Validate.notNull(services, "services"));
     }
 
+    /**
+     * Activates all services.
+     */
     void activate() {
         LOG.debug("Activating {} services ...", services.size());
         services.forEach(Service::activate);
         LOG.debug("All services activated.");
     }
 
+    /**
+     * Starts all services in a background thread which are marked as {@link AutoStartingService auto starting}.
+     */
     void autoStart() {
         LOG.debug("Auto start services ...");
         final int count = services.stream()
@@ -42,6 +55,9 @@ final class Services {
         LOG.debug("{} services auto started.", count);
     }
 
+    /**
+     * Stops all services which are marked as {@link AutoStartingService auto starting}.
+     */
     void autoStop() {
         LOG.debug("Auto stop services ...", services.size());
         final int count = services.stream()
@@ -54,6 +70,9 @@ final class Services {
         LOG.debug("{} services auto stopped.");
     }
 
+    /**
+     * Deactivates all services.
+     */
     void deactivate() {
         LOG.debug("Deactivating {} services ...", services.size());
         services.forEach(Service::deactivate);

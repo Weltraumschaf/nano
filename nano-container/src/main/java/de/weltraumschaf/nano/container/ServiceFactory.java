@@ -1,5 +1,6 @@
 package de.weltraumschaf.nano.container;
 
+import de.weltraumschaf.commons.validate.Validate;
 import de.weltraumschaf.nano.api.ModuleDescription;
 import de.weltraumschaf.nano.api.Service;
 import org.slf4j.Logger;
@@ -11,14 +12,21 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
 /**
- * Activates the services.
+ * Creates the services.
  *
  * @since 1.0.0
  */
 final class ServiceFactory {
     private static Logger LOG = LoggerFactory.getLogger(ServiceFactory.class);
 
+    /**
+     * Creates the services for a given module.
+     *
+     * @param module not {@code null}
+     * @return never {2code null}
+     */
     Collection<Service> create(final ModuleDescription module) {
+        Validate.notNull(module, "module");
         LOG.debug("Create services for module {} ({}) ...", module.getName(), module.getId());
         final Collection<Service> services = findServices(module.getServices());
         LOG.debug("Found {} service to create ...", services.size());
