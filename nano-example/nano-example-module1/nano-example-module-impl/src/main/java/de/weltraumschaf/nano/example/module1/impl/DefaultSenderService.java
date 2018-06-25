@@ -1,5 +1,7 @@
 package de.weltraumschaf.nano.example.module1.impl;
 
+import de.weltraumschaf.commons.validate.Validate;
+import de.weltraumschaf.nano.api.ServiceContext;
 import de.weltraumschaf.nano.api.messaging.Message;
 import de.weltraumschaf.nano.api.messaging.MessageBus;
 import de.weltraumschaf.nano.api.Require;
@@ -14,20 +16,19 @@ import java.util.Random;
  */
 public final class DefaultSenderService implements SenderService {
     private static Logger LOG = LoggerFactory.getLogger(DefaultSenderService.class);
-    @Require
     private MessageBus messages;
     private volatile boolean running;
 
     @Override
-    public void activate() {
+    public void activate(final ServiceContext ctx) {
         LOG.debug("Service activation.");
+        messages = Validate.notNull(ctx, "ctx").messages();
         running = true;
     }
 
     @Override
     public void start() {
         LOG.debug("Starting service ...");
-        final Random random = new Random();
 
         while (running) {
             try {

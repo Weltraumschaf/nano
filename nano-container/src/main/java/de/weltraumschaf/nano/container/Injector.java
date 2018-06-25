@@ -22,18 +22,15 @@ import java.util.stream.Collectors;
 final class Injector {
     private static Logger LOG = LoggerFactory.getLogger(Injector.class);
     private final Services services;
-    private final MessageBus messages;
 
     /**
      * Dedicated constructor.
      *
      * @param services not {@code null}
-     * @param messages not {@code null}
      */
-    Injector(final Services services, final MessageBus messages) {
+    Injector(final Services services) {
         super();
         this.services = Validate.notNull(services, "services");
-        this.messages = Validate.notNull(messages, "messages");
     }
 
     /**
@@ -58,7 +55,6 @@ final class Injector {
         });
     }
 
-
     /**
      * Finds all required fields.
      *
@@ -78,15 +74,9 @@ final class Injector {
 
     private void injectFields(final Service target, final Field f) {
         final Class<?> requiredType = f.getType();
-        final Optional<?> required;
 
-        if (requiredType.isAssignableFrom(MessageBus.class)) {
-            LOG.debug("Required filed '{}' wants a message bus.", f);
-            required = Optional.of(messages);
-        } else {
-            LOG.debug("Required filed '{}' wants a service.", f);
-            required = services.findService(requiredType);
-        }
+        LOG.debug("Required filed '{}' wants a service.", f);
+        final Optional<?> required = services.findService(requiredType);
 
         if (!required.isPresent()) {
             throw new IllegalStateException(

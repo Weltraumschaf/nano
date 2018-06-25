@@ -14,8 +14,10 @@ public interface Service {
      * <p>
      * You need not to implement this method, if your service does not need some activation stuff to do before usage.
      * </p>
+     *
+     * @param ctx not {@code null}
      */
-    default void activate() {
+    default void activate(ServiceContext ctx) {
         // Empty stub implementation.
     }
 

@@ -34,22 +34,20 @@ final class Services {
     }
 
     void start(final MessageBus messages) {
-        injectRequiredServices(messages);
-        activate();
+        Validate.notNull(messages, "messages");
+        injectRequiredServices();
+        activate(messages);
         autoStart();
     }
 
-    private void injectRequiredServices(final MessageBus messages) {
-        final Injector injector = new Injector(this, messages);
+    private void injectRequiredServices() {
+        final Injector injector = new Injector(this);
         services.forEach(injector::injectRequired);
     }
 
-    /**
-     * Activates all services.
-     */
-    private void activate() {
+    private void activate(final MessageBus messages) {
         LOG.debug("Activating {} services ...", services.size());
-        services.forEach(Service::activate);
+        services.forEach(service -> service.activate(new DefaultServiceContext(messages)));
         LOG.debug("All services activated.");
     }
 

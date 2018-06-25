@@ -1,6 +1,7 @@
 package de.weltraumschaf.nano.example.module1.impl;
 
 import de.weltraumschaf.nano.api.Require;
+import de.weltraumschaf.nano.api.ServiceContext;
 import de.weltraumschaf.nano.example.module1.api.AutoService;
 import de.weltraumschaf.nano.example.module1.api.HelperService;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ public final class DefaultAutoService implements AutoService {
     private HelperService helper;
 
     @Override
-    public void activate() {
+    public void activate(final ServiceContext ctx) {
         LOG.debug("Service activation.");
         running = true;
     }
