@@ -4,10 +4,7 @@ import de.weltraumschaf.commons.validate.Validate;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @since 1.0.0
@@ -27,12 +24,12 @@ public final class ModuleDescription {
         this(UUID.randomUUID(), name, description, services);
     }
 
-    ModuleDescription(final UUID id, final String name, final String description, final Collection<Class<? extends Service>> services) {
+    public ModuleDescription(final UUID id, final String name, final String description, final Collection<Class<? extends Service>> services) {
         super();
         this.id = Validate.notNull(id, "id");
         this.name = Validate.notEmpty(name, "name");
         this.description = Validate.notNull(description, "description");
-        this.services = Collections.unmodifiableCollection(Validate.notNull(services, "services"));
+        this.services = new ArrayList<>(Validate.notNull(services, "services"));
     }
 
     @Override
@@ -52,4 +49,5 @@ public final class ModuleDescription {
     public int hashCode() {
         return Objects.hash(id, name, description, services);
     }
+
 }
