@@ -1,6 +1,7 @@
 package de.weltraumschaf.nano.container;
 
 import de.weltraumschaf.commons.validate.Validate;
+import de.weltraumschaf.nano.api.messaging.MessageBus;
 import de.weltraumschaf.nano.api.Require;
 import de.weltraumschaf.nano.api.Service;
 import org.slf4j.Logger;
@@ -21,15 +22,18 @@ import java.util.stream.Collectors;
 final class Injector {
     private static Logger LOG = LoggerFactory.getLogger(Injector.class);
     private final Services services;
+    private final MessageBus messages;
 
     /**
      * Dedicated constructor.
      *
      * @param services not {@code null}
+     * @param messages not {@code null}
      */
-    Injector(final Services services) {
+    Injector(final Services services, final MessageBus messages) {
         super();
         this.services = Validate.notNull(services, "services");
+        this.messages = Validate.notNull(messages, "messages");
     }
 
     /**
@@ -37,7 +41,7 @@ final class Injector {
      *
      * @param target not {@code null}
      */
-    void injectRequiredServices(final Service target) {
+    void injectRequired(final Service target) {
         Validate.notNull(target, "target");
         findRequiredFields(target).forEach(f -> {
             final boolean accessible = f.isAccessible();
@@ -46,28 +50,14 @@ final class Injector {
                 f.setAccessible(true);
             }
 
-            final Optional<Service> required = services.findService(f.getType());
-
-            if (!required.isPresent()) {
-                throw new IllegalStateException(
-                    String.format("Can't find required service '%s' for '%s'!",
-                        f.getType().getCanonicalName(), target.getClass().getCanonicalName()));
-            }
-
-            try {
-                LOG.debug("Inject required '{}' on '{}'.",
-                    required.get().getClass().getCanonicalName(),
-                    target.getClass().getCanonicalName());
-                f.set(target, required.get());
-            } catch (final IllegalAccessException e) {
-                throw new IllegalStateException(e.getMessage(), e);
-            }
+            injectFields(target, f);
 
             if (!accessible) {
                 f.setAccessible(false);
             }
         });
     }
+
 
     /**
      * Finds all required fields.
@@ -84,5 +74,33 @@ final class Injector {
         return Arrays.stream(target.getClass().getDeclaredFields())
             .filter(f -> f.isAnnotationPresent(Require.class))
             .collect(Collectors.toList());
+    }
+
+    private void injectFields(final Service target, final Field f) {
+        final Class<?> requiredType = f.getType();
+        final Optional<?> required;
+
+        if (requiredType.isAssignableFrom(MessageBus.class)) {
+            LOG.debug("Required filed '{}' wants a message bus.", f);
+            required = Optional.of(messages);
+        } else {
+            LOG.debug("Required filed '{}' wants a service.", f);
+            required = services.findService(requiredType);
+        }
+
+        if (!required.isPresent()) {
+            throw new IllegalStateException(
+                String.format("Can't find required service '%s' for '%s'!",
+                    requiredType.getCanonicalName(), target.getClass().getCanonicalName()));
+        }
+
+        try {
+            LOG.debug("Inject required '{}' on '{}'.",
+                required.get().getClass().getCanonicalName(),
+                target.getClass().getCanonicalName());
+            f.set(target, required.get());
+        } catch (final IllegalAccessException e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
     }
 }

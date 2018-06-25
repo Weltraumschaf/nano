@@ -2,6 +2,7 @@ package de.weltraumschaf.nano.container;
 
 import de.weltraumschaf.commons.validate.Validate;
 import de.weltraumschaf.nano.api.AutoStartingService;
+import de.weltraumschaf.nano.api.messaging.MessageBus;
 import de.weltraumschaf.nano.api.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,15 +33,15 @@ final class Services {
         this.services = new ArrayList<>(Validate.notNull(services, "services"));
     }
 
-    void start() {
-        injectRequiredServices();
+    void start(final MessageBus messages) {
+        injectRequiredServices(messages);
         activate();
         autoStart();
     }
 
-    private void injectRequiredServices() {
-        final Injector injector = new Injector(this);
-        services.forEach(injector::injectRequiredServices);
+    private void injectRequiredServices(final MessageBus messages) {
+        final Injector injector = new Injector(this, messages);
+        services.forEach(injector::injectRequired);
     }
 
     /**

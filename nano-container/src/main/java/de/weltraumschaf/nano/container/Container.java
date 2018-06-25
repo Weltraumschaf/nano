@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public final class Container {
     private static Logger LOG = LoggerFactory.getLogger(Container.class);
 
+    private final DefaultMessageBus messages = new DefaultMessageBus();
     private volatile boolean running;
     private volatile boolean stopped;
     private Services services;
@@ -30,7 +31,7 @@ public final class Container {
         LOG.info("Container starts...");
         running = true;
         services = new Services(createServices());
-        services.start();
+        services.start(messages);
         LOG.info("Container started.");
 
         loop();
@@ -54,7 +55,7 @@ public final class Container {
         while (!stopped) {
             try {
                 LOG.debug("Wait for stopping ...");
-                Thread.sleep(10);
+                Thread.sleep(100);
             } catch (final InterruptedException e) {
                 LOG.error(e.getMessage(), e);
             }

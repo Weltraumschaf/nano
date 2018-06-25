@@ -19,6 +19,47 @@
 
     <name>Nano :: Reactor</name>
 
+    <developers>
+        <developer>
+            <id>Weltraumschaf</id>
+            <name>Sven Strittmatter</name>
+            <email>weltraumschaf@googlemail.com</email>
+            <roles>
+                <role>Project Lead</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>THE BEER-WARE LICENSE</name>
+            <url>http://www.weltraumschaf.de/the-beer-ware-license.txt</url>
+            <distribution>repo</distribution>
+            <comments>
+                LICENSE
+
+                "THE BEER-WARE LICENSE" (Revision 42):
+                "Sven Strittmatter" &lt;weltraumschaf(at)googlemail(dot)com&gt; wrote this file.
+                As long as you retain this notice you can do whatever you want with
+                this stuff. If we meet some day, and you think this stuff is worth it,
+                you can buy me a beer in return.
+            </comments>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/Weltraumschaf/nano.git</connection>
+        <developerConnection>scm:git:git@github.com:Weltraumschaf/nano.git</developerConnection>
+        <url>https://github.com/Weltraumschaf/nano.git</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <ciManagement>
+        <system>jenkins</system>
+        <url>https://ci.weltraumschaf.de/job/nano/</url>
+    </ciManagement>
+
     <properties>
         <project.build.version.source>1.8</project.build.version.source>
         <project.build.version.target>1.8</project.build.version.target>
@@ -53,6 +94,11 @@
             <dependency>
                 <groupId>de.weltraumschaf.commons</groupId>
                 <artifactId>validate</artifactId>
+                <version>${commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.weltraumschaf.commons</groupId>
+                <artifactId>testing</artifactId>
                 <version>${commons.version}</version>
             </dependency>
             <dependency>

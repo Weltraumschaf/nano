@@ -14,7 +14,9 @@ public final class Describer implements ModuleDescriber {
     private static final Collection<Class<? extends Service>> SERVICES = Arrays.asList(
         HelloService.class,
         AutoService.class,
-        HelperService.class);
+        HelperService.class,
+        SenderService.class,
+        ReceiverService.class);
 
     @Override
     public ModuleDescription describe() {
