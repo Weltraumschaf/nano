@@ -5,6 +5,6 @@ import de.weltraumschaf.nano.api.Service;
 /**
  *
  */
-public interface ExampleService extends Service {
+public interface HelloService extends Service {
     void hello();
 }

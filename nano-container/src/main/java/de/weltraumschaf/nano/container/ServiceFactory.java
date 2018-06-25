@@ -15,15 +15,13 @@ import java.util.stream.Collectors;
  *
  * @since 1.0.0
  */
-final class ServiceActivator {
-    private static Logger LOG = LoggerFactory.getLogger(ServiceActivator.class);
+final class ServiceFactory {
+    private static Logger LOG = LoggerFactory.getLogger(ServiceFactory.class);
 
-    Collection<Service> activate(final ModuleDescription module) {
-        LOG.debug("Activate services for module {} ({}) ...", module.getName(), module.getId());
+    Collection<Service> create(final ModuleDescription module) {
+        LOG.debug("Create services for module {} ({}) ...", module.getName(), module.getId());
         final Collection<Service> services = findServices(module.getServices());
-        LOG.debug("Found {} service to activate ...", services.size());
-        services.forEach(Service::activate);
-        LOG.debug("All services for module {} ({}) activated.", module.getName(), module.getId());
+        LOG.debug("Found {} service to create ...", services.size());
         return services;
     }
 
