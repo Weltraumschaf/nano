@@ -29,10 +29,8 @@ public final class Container {
     public void start() {
         LOG.info("Container starts...");
         running = true;
-        final Collection<ModuleDescription> modules = findModules();
-        services = new Services(createServices(modules));
-        services.activate();
-        services.autoStart();
+        services = new Services(createServices());
+        services.start();
         LOG.info("Container started.");
 
         loop();
@@ -73,9 +71,9 @@ public final class Container {
         return modules;
     }
 
-    private Collection<Service> createServices(final Collection<ModuleDescription> modules) {
+    private Collection<Service> createServices() {
         final ServiceFactory factory = new ServiceFactory();
-        return modules.stream()
+        return findModules().stream()
             .map(factory::create)
             .flatMap(Collection::stream)
             .collect(Collectors.toList());

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,10 +32,21 @@ final class Services {
         this.services = new ArrayList<>(Validate.notNull(services, "services"));
     }
 
+    void start() {
+        injectRequiredServices();
+        activate();
+        autoStart();
+    }
+
+    private void injectRequiredServices() {
+        final Injector injector = new Injector(this);
+        services.forEach(injector::injectRequiredServices);
+    }
+
     /**
      * Activates all services.
      */
-    void activate() {
+    private void activate() {
         LOG.debug("Activating {} services ...", services.size());
         services.forEach(Service::activate);
         LOG.debug("All services activated.");
@@ -43,7 +55,7 @@ final class Services {
     /**
      * Starts all services in a background thread which are marked as {@link AutoStartingService auto starting}.
      */
-    void autoStart() {
+    private void autoStart() {
         LOG.debug("Auto start services ...");
         final int count = services.stream()
             .filter(s -> s instanceof AutoStartingService)
@@ -77,5 +89,11 @@ final class Services {
         LOG.debug("Deactivating {} services ...", services.size());
         services.forEach(Service::deactivate);
         LOG.debug("All services deactivated.");
+    }
+
+    Optional<Service> findService(final Class<?> type) {
+        return services.stream()
+            .filter(s -> type.isAssignableFrom(s.getClass()))
+            .findFirst();
     }
 }

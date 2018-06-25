@@ -1,6 +1,8 @@
 package de.weltraumschaf.nano.example.module1.impl;
 
+import de.weltraumschaf.nano.api.Require;
 import de.weltraumschaf.nano.example.module1.api.AutoService;
+import de.weltraumschaf.nano.example.module1.api.HelperService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +14,8 @@ import java.util.Random;
 public final class DefaultAutoService implements AutoService {
     private static Logger LOG = LoggerFactory.getLogger(DefaultAutoService.class);
     private volatile boolean running;
+    @Require
+    private HelperService helper;
 
     @Override
     public void activate() {
@@ -27,7 +31,7 @@ public final class DefaultAutoService implements AutoService {
         while (running) {
             try {
                 int wait = random.nextInt(5_000);
-                LOG.info("Auto (wait {}) ...", wait);
+                LOG.info("Auto (wait {}): {} ...", wait, helper.help());
                 Thread.sleep(wait);
             } catch (final InterruptedException e) {
                 LOG.error(e.getMessage(), e);
