@@ -13,12 +13,12 @@ public final class DefaultExampleService extends ServiceAdapter implements Examp
     private static Logger LOG = LoggerFactory.getLogger(DefaultExampleService.class);
 
     @Override
-    public void activate() throws Exception {
+    public void activate() {
         LOG.info("Service activated.");
     }
 
     @Override
-    public void deactivate() throws Exception {
+    public void deactivate() {
         LOG.info("Service deactivated.");
     }
 

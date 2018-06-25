@@ -5,12 +5,12 @@ package de.weltraumschaf.nano.api;
  */
 public abstract class ServiceAdapter implements Service {
     @Override
-    public void activate() throws Exception {
+    public void activate()  {
         // Empty stub implementation.
     }
 
     @Override
-    public void deactivate() throws Exception {
+    public void deactivate() {
         // Empty stub implementation.
     }
 }
