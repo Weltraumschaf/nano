@@ -7,6 +7,11 @@ import lombok.ToString;
 import java.util.*;
 
 /**
+ * Describes a module.
+ * <p>
+ * A module as a unique id, a name, a description and a set of service interfaces.
+ * </p>
+ *
  * @since 1.0.0
  */
 @ToString
@@ -18,18 +23,33 @@ public final class ModuleDescription {
     @Getter
     private final String description;
     @Getter
-    private final Collection<Class<? extends Service>> services;
+    private final Set<Class<? extends Service>> services;
 
-    public ModuleDescription(final String name, final String description, final Collection<Class<? extends Service>> services) {
+    /**
+     * Convenience constructor which initializes the id with {@link UUID#randomUUID()}.
+     *
+     * @param name        not {@code null} nor empty
+     * @param description not {@code null}
+     * @param services    not {@code null}
+     */
+    public ModuleDescription(final String name, final String description, final Set<Class<? extends Service>> services) {
         this(UUID.randomUUID(), name, description, services);
     }
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param id          not {@code null}
+     * @param name        not {@code null} nor empty
+     * @param description not {@code null}
+     * @param services    not {@code null}
+     */
     public ModuleDescription(final UUID id, final String name, final String description, final Collection<Class<? extends Service>> services) {
         super();
         this.id = Validate.notNull(id, "id");
         this.name = Validate.notEmpty(name, "name");
         this.description = Validate.notNull(description, "description");
-        this.services = new ArrayList<>(Validate.notNull(services, "services"));
+        this.services = new HashSet<>(Validate.notNull(services, "services"));
     }
 
     @Override

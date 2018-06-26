@@ -11,15 +11,12 @@ import java.util.Collection;
  * Describes this module.
  */
 public final class Describer implements ModuleDescriber {
-    private static final Collection<Class<? extends Service>> SERVICES = Arrays.asList(
-        HelloService.class,
-        AutoService.class,
-        HelperService.class,
-        SenderService.class,
-        ReceiverService.class);
 
     @Override
     public ModuleDescription describe() {
-        return new ModuleDescription("Example Module 1", "", SERVICES);
+        return new ModuleDescription(
+            "Example Module 1",
+            "",
+            ModuleDescriber.findServices("de.weltraumschaf.nano.example.module1.api"));
     }
 }
