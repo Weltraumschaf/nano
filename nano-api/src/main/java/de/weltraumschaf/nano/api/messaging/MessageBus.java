@@ -3,7 +3,7 @@ package de.weltraumschaf.nano.api.messaging;
 /**
  * Defines the interface of an async message bus.
  * <p>
- * A publisher can send messages to a topic and subscriber will receive this message.
+ * A publisher can send getMessages to a topic and subscriber will receive this message.
  * </p>
  *
  * @since 1.0.0

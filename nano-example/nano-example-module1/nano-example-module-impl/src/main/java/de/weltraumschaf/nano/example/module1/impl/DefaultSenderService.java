@@ -4,12 +4,9 @@ import de.weltraumschaf.commons.validate.Validate;
 import de.weltraumschaf.nano.api.ServiceContext;
 import de.weltraumschaf.nano.api.messaging.Message;
 import de.weltraumschaf.nano.api.messaging.MessageBus;
-import de.weltraumschaf.nano.api.Require;
 import de.weltraumschaf.nano.example.module1.api.SenderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Random;
 
 /**
  *
@@ -22,7 +19,7 @@ public final class DefaultSenderService implements SenderService {
     @Override
     public void activate(final ServiceContext ctx) {
         LOG.debug("Service activation.");
-        messages = Validate.notNull(ctx, "ctx").messages();
+        messages = Validate.notNull(ctx, "ctx").getMessages();
         running = true;
     }
 

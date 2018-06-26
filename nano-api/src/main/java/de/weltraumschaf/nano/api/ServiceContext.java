@@ -13,5 +13,5 @@ public interface ServiceContext {
      *
      * @return never {@code null}
      */
-    MessageBus messages();
+    MessageBus getMessages();
 }

@@ -1,7 +1,7 @@
 package de.weltraumschaf.nano.api.messaging;
 
 /**
- * A subscriber can tell interest of messages.
+ * A subscriber can tell interest of getMessages.
  *
  * @since 1.0.0
  */

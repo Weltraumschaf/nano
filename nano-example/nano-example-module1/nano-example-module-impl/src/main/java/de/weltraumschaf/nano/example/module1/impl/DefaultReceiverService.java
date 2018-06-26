@@ -19,7 +19,7 @@ public final class DefaultReceiverService implements ReceiverService, MessageSub
     @Override
     public void activate(final ServiceContext ctx) {
         LOG.debug("Service activation.");
-        messages = Validate.notNull(ctx, "ctx").messages();
+        messages = Validate.notNull(ctx, "ctx").getMessages();
         messages.subscribe(Topics.MY_TOPIC, this);
     }
 

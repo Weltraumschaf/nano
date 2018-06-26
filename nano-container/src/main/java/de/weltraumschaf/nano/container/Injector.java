@@ -40,7 +40,14 @@ final class Injector {
      */
     void injectRequired(final Service target) {
         Validate.notNull(target, "target");
-        findRequiredFields(target).forEach(f -> {
+        final Collection<Field> found = findRequiredFields(target);
+
+        if (found.isEmpty()) {
+            LOG.debug("No required fields found for '{}'.", target.getClass().getCanonicalName());
+            return;
+        }
+
+        found.forEach(f -> {
             final boolean accessible = f.isAccessible();
 
             if (!accessible) {

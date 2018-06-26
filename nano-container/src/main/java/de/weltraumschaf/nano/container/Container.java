@@ -50,7 +50,7 @@ public final class Container {
         LOG.info("Container is stopping...");
         running = false;
 
-        services.autoStop();
+        services.stop();
 
         while (!stopped) {
             try {
