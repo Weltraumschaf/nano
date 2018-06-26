@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -40,7 +37,7 @@ final class Injector {
      */
     void injectRequired(final Service target) {
         Validate.notNull(target, "target");
-        final Collection<Field> found = findRequiredFields(target);
+        final Collection<Field> found = findRequiredFields(target.getClass());
 
         if (found.isEmpty()) {
             LOG.debug("No required fields found for '{}'.", target.getClass().getCanonicalName());
@@ -64,19 +61,29 @@ final class Injector {
 
     /**
      * Finds all required fields.
+     * <p>
+     * Yhis method gous through the whole class hierarchy to find required fields
+     * </p>
      *
-     * @param target may be {@code null}
+     * @param type may be {@code null}
      * @return never {@code null}
      */
-    Collection<Field> findRequiredFields(final Service target) {
-        if (null == target) {
+    Collection<Field> findRequiredFields(final Class<?> type) {
+        if (null == type) {
             return Collections.emptyList();
         }
 
-        LOG.debug("Find required fields for '{}'", target.getClass().getCanonicalName());
-        return Arrays.stream(target.getClass().getDeclaredFields())
+        LOG.debug("Find required fields for '{}'", type.getCanonicalName());
+
+        final List<Field> found = Arrays.stream(type.getDeclaredFields())
             .filter(f -> f.isAnnotationPresent(Require.class))
             .collect(Collectors.toList());
+
+        if (null != type.getSuperclass()) {
+            found.addAll(findRequiredFields(type.getSuperclass()));
+        }
+
+        return found;
     }
 
     private void injectFields(final Service target, final Field f) {

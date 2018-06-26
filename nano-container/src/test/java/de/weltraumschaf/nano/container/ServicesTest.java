@@ -36,7 +36,6 @@ public class ServicesTest {
     }
 
     @Test
-    @Ignore
     public void start_injectRequiredServices() {
         sut.start(mock(MessageBus.class));
 
@@ -66,6 +65,7 @@ public class ServicesTest {
     }
 
     @Test
+    @Ignore
     public void start_autoStart() {
         sut.start(mock(MessageBus.class));
 
@@ -110,7 +110,7 @@ public class ServicesTest {
     interface ServiceThree extends AutoStartingService {
     }
 
-    class DefaultServiceThree implements ServiceThree {
+    static class DefaultServiceThree implements ServiceThree {
         @Require
         private ServiceOne one;
         @Require

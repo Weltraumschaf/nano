@@ -43,7 +43,12 @@ public class InjectorTest {
 
     @Test
     public void findRequiredFields() {
-        assertThat(sut.findRequiredFields(requires), hasSize(2));
+        assertThat(sut.findRequiredFields(requires.getClass()), hasSize(2));
+    }
+
+    @Test
+    public void findRequiredFields_throughClassHierarchy() {
+        assertThat(sut.findRequiredFields(Foo.class), hasSize(3));
     }
 
     interface ServiceWhichRequires extends Service {
@@ -68,5 +73,20 @@ public class InjectorTest {
     }
 
     private static class DefaultRequiredServiceTwo implements RequiredServiceTwo {
+    }
+
+    private static class Foo extends Bar {
+        @Require
+        private Object foo;
+    }
+
+    private static class Bar extends Baz {
+        @Require
+        private Object bar;
+    }
+
+    private static class Baz {
+        @Require
+        private Object baz;
     }
 }
