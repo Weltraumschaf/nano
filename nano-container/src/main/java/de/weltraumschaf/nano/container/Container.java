@@ -55,7 +55,7 @@ public final class Container {
         while (!stopped) {
             try {
                 LOG.debug("Wait for stopping ...");
-                Thread.sleep(100);
+                Thread.sleep(1_000);
             } catch (final InterruptedException e) {
                 LOG.error(e.getMessage(), e);
             }
