@@ -31,14 +31,6 @@ public final class DefaultEchoService implements EchoService {
     private ServerSocketChannel channel;
     private volatile boolean listening; // Volatile because must be recognized over multiple threads.
 
-    private Selectectable selectable = () -> {
-        if (null == selector) {
-            return 0;
-        }
-
-        return selector.select();
-    };
-
     @Override
     public void activate(final ServiceContext ctx) {
         LOG.debug("Activate echo server ...");
@@ -95,7 +87,7 @@ public final class DefaultEchoService implements EchoService {
     private void serve() throws IOException {
         while (listening) {
             // This blocks until there are keys for ready channels.
-            final int numberOfKeys = selectable.select();
+            final int numberOfKeys = selector.select();
 
             if (numberOfKeys == 0) {
                 // No keys selected: nothing to do.
@@ -183,10 +175,4 @@ public final class DefaultEchoService implements EchoService {
         return new String(bytes, ENCODING);
     }
 
-    /**
-     * Functional interface with a declared {@link IOException} to wrap {@link Selector}.
-     */
-    interface Selectectable {
-        int select() throws IOException;
-    }
 }
