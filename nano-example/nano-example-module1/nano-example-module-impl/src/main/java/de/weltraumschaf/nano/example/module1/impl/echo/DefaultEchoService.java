@@ -1,4 +1,4 @@
-package de.weltraumschaf.nano.example.module1.impl;
+package de.weltraumschaf.nano.example.module1.impl.echo;
 
 import de.weltraumschaf.commons.validate.Validate;
 import de.weltraumschaf.nano.api.ServiceContext;
