@@ -5,6 +5,7 @@ import de.weltraumschaf.nano.example.module1.api.EchoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -107,8 +108,7 @@ public final class DefaultEchoService implements EchoService {
 
             if (key.isReadable()) {
                 final SocketChannel connection = (SocketChannel) key.channel();
-                final String data = drainConnection(connection);
-                sendResponse(connection, data);
+                sendResponse(connection, drainConnection(connection));
                 connection.close();
             }
 
@@ -130,22 +130,23 @@ public final class DefaultEchoService implements EchoService {
         connection.register(selector, SelectionKey.OP_READ);
     }
 
-    private String drainConnection(final SocketChannel connection) throws IOException {
-        final ByteBuffer buffer = ByteBuffer.allocateDirect(BUFFER_SIZE);
-        final StringBuilder content = new StringBuilder();
+    private byte[] drainConnection(final SocketChannel connection) throws IOException {
+        final ByteBuffer input = ByteBuffer.allocateDirect(BUFFER_SIZE);
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
 
-        while (connection.read(buffer) > 0) {
-            buffer.flip(); // Make buffer readable
-
-            content.append(StringConverter.fromBuffer(buffer));
-            buffer.clear();
+        while (connection.read(input) > 0) {
+            input.flip(); // Make buffer readable
+            final byte[] bytes = new byte[input.remaining()];
+            input.get(bytes, 0, input.remaining());
+            output.write(bytes);
+            input.clear();
         }
 
-        return content.toString().trim();
+        return output.toByteArray();
     }
 
-    private void sendResponse(final SocketChannel socketChannel, final String data) throws IOException {
-        socketChannel.write(StringConverter.toBuffer(data + EOL));
+    private void sendResponse(final SocketChannel socketChannel, final byte[] data) throws IOException {
+        socketChannel.write(ByteBuffer.wrap(data));
     }
 
     private static void closeSilently(final Closeable toClose) {
