@@ -1,6 +1,5 @@
 package de.weltraumschaf.nano.example.module1.impl.echo;
 
-import de.weltraumschaf.commons.validate.Validate;
 import de.weltraumschaf.nano.api.ServiceContext;
 import de.weltraumschaf.nano.example.module1.api.EchoService;
 import org.slf4j.Logger;
@@ -13,7 +12,6 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
-import java.nio.charset.Charset;
 import java.util.Iterator;
 
 /**
@@ -21,8 +19,7 @@ import java.util.Iterator;
  */
 public final class DefaultEchoService implements EchoService {
     private static Logger LOG = LoggerFactory.getLogger(DefaultEchoService.class);
-    private static final Charset ENCODING = Charset.forName("UTF-8");
-    private static final String EOL = "\r\n";
+        private static final String EOL = "\r\n";
     private static final int BUFFER_SIZE = 1_024;
 
     private final int port = 4242;
@@ -140,7 +137,7 @@ public final class DefaultEchoService implements EchoService {
         while (connection.read(buffer) > 0) {
             buffer.flip(); // Make buffer readable
 
-            content.append(bufferTwoString(buffer));
+            content.append(StringConverter.fromBuffer(buffer));
             buffer.clear();
         }
 
@@ -148,7 +145,7 @@ public final class DefaultEchoService implements EchoService {
     }
 
     private void sendResponse(final SocketChannel socketChannel, final String data) throws IOException {
-        socketChannel.write(stringToBuffer(data + EOL));
+        socketChannel.write(StringConverter.toBuffer(data + EOL));
     }
 
     private static void closeSilently(final Closeable toClose) {
@@ -159,20 +156,6 @@ public final class DefaultEchoService implements EchoService {
                 LOG.warn("Problem closing resource: {}", e.getMessage(), e);
             }
         }
-    }
-
-    private ByteBuffer stringToBuffer(final String input) {
-        Validate.notNull(input, "input");
-        return ByteBuffer.wrap(input.getBytes(ENCODING));
-    }
-
-    private String bufferTwoString(final ByteBuffer input) {
-        Validate.notNull(input, "input");
-        input.rewind();
-        final byte[] bytes = new byte[input.remaining()];
-        input.get(bytes, 0, input.remaining());
-
-        return new String(bytes, ENCODING);
     }
 
 }
