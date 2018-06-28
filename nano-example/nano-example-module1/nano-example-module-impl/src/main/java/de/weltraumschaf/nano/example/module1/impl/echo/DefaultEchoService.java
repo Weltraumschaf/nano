@@ -4,7 +4,7 @@ import de.weltraumschaf.nano.api.Require;
 import de.weltraumschaf.nano.api.ServiceContext;
 import de.weltraumschaf.nano.example.module1.api.EchoService;
 import de.weltraumschaf.nano.example.module1.api.TcpService;
-import de.weltraumschaf.nano.example.module1.api.TcpServiceConfig;
+import de.weltraumschaf.nano.example.module1.api.TcpServiceConfiguration;
 
 /**
  *
@@ -16,7 +16,7 @@ public final class DefaultEchoService implements EchoService {
 
     @Override
     public void activate(final ServiceContext ctx) {
-        server.configure(this, new TcpServiceConfig(4242));
+        server.configure(this, new TcpServiceConfiguration(4242));
         server.register(this, request -> request);
     }
 

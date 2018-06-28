@@ -2,25 +2,14 @@ package de.weltraumschaf.nano.example.module1.impl.echo;
 
 import de.weltraumschaf.commons.validate.Validate;
 import de.weltraumschaf.nano.api.Service;
-import de.weltraumschaf.nano.api.ServiceContext;
 import de.weltraumschaf.nano.example.module1.api.TcpService;
-import de.weltraumschaf.nano.example.module1.api.TcpServiceConfig;
+import de.weltraumschaf.nano.example.module1.api.TcpServiceConfiguration;
 import de.weltraumschaf.nano.example.module1.api.TcpServiceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.nio.ByteBuffer;
-import java.nio.channels.*;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Optional;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -29,159 +18,74 @@ public final class DefaultTcpService implements TcpService {
 
     private static Logger LOG = LoggerFactory.getLogger(DefaultEchoService.class);
     private static final int BUFFER_SIZE = 1_024;
-    private final Collection<TcpServiceHandler> handlers = new LinkedList<>();
-    private TcpServiceConfig configuration;
-    private Selector selector;
-    private ServerSocket server;
-    private ServerSocketChannel channel;
-    private volatile boolean listening; // Volatile because must be recognized over multiple threads.
+    private final Map<Service, TcpServiceHandler> handlers = new ConcurrentHashMap<>();
+    private Map<Service, TcpServiceConfiguration> configurations = new ConcurrentHashMap<>();
+    private Map<Service, TcpServer> servers = new ConcurrentHashMap<>();
 
     @Override
-    public void configure(final Service callee, final TcpServiceConfig configuration) {
-        this.configuration = Validate.notNull(configuration, "configuration");
+    public void configure(final Service callee, final TcpServiceConfiguration configuration) {
+        this.configurations.put(
+            Validate.notNull(callee, "callee"),
+            Validate.notNull(configuration, "configuration")
+        );
     }
 
     @Override
     public void register(final Service callee, final TcpServiceHandler handler) {
-        handlers.add(handler);
-    }
-
-    @Override
-    public void activate(final ServiceContext ctx) {
-        LOG.debug("Activate echo server ...");
-
-        try {
-            selector = Selector.open();
-
-            channel = ServerSocketChannel.open();
-            channel.configureBlocking(false);
-            channel.register(selector, SelectionKey.OP_ACCEPT);
-        } catch (final IOException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
-
-        LOG.debug("Echo server activated.");
+        handlers.put(
+            Validate.notNull(callee, "callee"),
+            Validate.notNull(handler, "handler")
+        );
     }
 
     @Override
     public void start(final Service callee) {
+        assertPreconditions(callee);
+
+        final TcpServiceConfiguration configuration = configurations.get(callee);
         final int port = configuration.getPort();
+
         LOG.debug("Starting echo server at port {0} ...", port);
-        listening = true;
-        server = channel.socket();
-
-        try {
-            server.bind(new InetSocketAddress(InetAddress.getByName(configuration.getHostname()), port));
-        } catch (final IOException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
-
-        new Thread(this::serve).start();
+        final TcpServer server = new TcpServer(configuration, handlers.get(callee));
+        server.start();
+        servers.put(callee, server);
         LOG.debug("Echo server started at port {0} ...", port);
     }
 
+
     @Override
     public void stop(final Service callee) {
-        LOG.debug("Stopping echo server...");
-        listening = false;
+        LOG.debug("Stopping echo server ...");
+
+        if (servers.containsKey(callee)) {
+            servers.get(callee).stop();
+            LOG.debug("Echo server stopped.");
+        } else {
+            LOG.warn("No such server started for {} to stop!", callee);
+        }
     }
 
     @Override
     public void deactivate() {
         LOG.debug("Deactivating echo server...");
-        closeSilently(server);
-        closeSilently(channel);
-        closeSilently(selector);
+        servers.values().forEach(TcpServer::stop);
         handlers.clear();
+        configurations.clear();
+        servers.clear();
         LOG.debug("Echo server deactivated.");
     }
 
-    private void serve() {
-        try {
-            while (listening) {
-                // This blocks until there are keys for ready channels.
-                final int numberOfKeys = selector.select();
-
-                if (numberOfKeys == 0) {
-                    // No keys selected: nothing to do.
-                    continue;
-                }
-
-                querySelectorKeys();
-            }
-        } catch (final IOException e) {
-            LOG.error("The echo server terminated because of an exception: {}", e.getMessage(), e);
-        }
-    }
-
-    private void querySelectorKeys() throws IOException {
-        final Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
-
-        while (keys.hasNext()) {
-            final SelectionKey key = keys.next();
-
-            if (key.isAcceptable()) {
-                acceptNewConnection(key);
-            }
-
-            if (key.isReadable()) {
-                final SocketChannel connection = (SocketChannel) key.channel();
-                final byte[] request = drainConnection(connection);
-                final Optional<TcpServiceHandler> handler = handlers.stream().findFirst();
-
-                if (handler.isPresent()) {
-                    final byte[] response = handler.get().handle(request);
-                    sendResponse(connection, response);
-                }
-
-                connection.close();
-            }
-
-            // Remove key from selected set: it's been handled.
-            keys.remove();
-        }
-    }
-
-    private void acceptNewConnection(final SelectionKey key) throws IOException {
-        final ServerSocketChannel socket = (ServerSocketChannel) key.channel();
-        final SocketChannel connection = socket.accept();
-
-        if (connection == null) { // May happen, ignoring.
-            return;
+    private void assertPreconditions(final Service callee) {
+        if (!handlers.containsKey(callee)) {
+            throw new IllegalStateException(String.format("No handler registered for %s!", callee));
         }
 
-        connection.configureBlocking(false);
-        // Register for reading the data of the newly accepted connection.
-        connection.register(selector, SelectionKey.OP_READ);
-    }
-
-    private byte[] drainConnection(final SocketChannel connection) throws IOException {
-        final ByteBuffer input = ByteBuffer.allocateDirect(BUFFER_SIZE);
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
-
-        while (connection.read(input) > 0) {
-            input.flip(); // Make buffer readable
-            final byte[] bytes = new byte[input.remaining()];
-            input.get(bytes, 0, input.remaining());
-            output.write(bytes);
-            input.clear();
+        if (!configurations.containsKey(callee)) {
+            throw new IllegalStateException(String.format("No configuration available for %s!", callee));
         }
 
-        return output.toByteArray();
-    }
-
-    private void sendResponse(final SocketChannel socketChannel, final byte[] data) throws IOException {
-        socketChannel.write(ByteBuffer.wrap(data));
-    }
-
-    private static void closeSilently(final Closeable toClose) {
-        if (null != toClose) {
-            try {
-                toClose.close();
-            } catch (final IOException | ClosedSelectorException e) {
-                LOG.warn("Problem closing resource: {}", e.getMessage(), e);
-            }
+        if (servers.containsKey(callee)) {
+            throw new IllegalStateException(String.format("Already started server for %s!", callee));
         }
     }
-
 }

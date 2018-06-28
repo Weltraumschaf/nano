@@ -6,7 +6,7 @@ import de.weltraumschaf.nano.api.Service;
 /**
  *
  */
-public interface TcpService extends Service, Configurable<TcpServiceConfig> {
+public interface TcpService extends Service, Configurable<TcpServiceConfiguration> {
     void register(Service callee, TcpServiceHandler handler);
     void start(Service callee);
     void stop(Service callee);

@@ -10,7 +10,7 @@ import java.util.Objects;
  * @since 1.0.0
  */
 @ToString
-public final class TcpServiceConfig {
+public final class TcpServiceConfiguration {
     @Getter
     private int port;
     @Getter
@@ -21,7 +21,7 @@ public final class TcpServiceConfig {
      *
      * @param port must be greater than 0
      */
-    public TcpServiceConfig(final int port) {
+    public TcpServiceConfiguration(final int port) {
         this(port, "localhost");
     }
 
@@ -31,7 +31,7 @@ public final class TcpServiceConfig {
      * @param port     must be greater than 0
      * @param hostname not {@code null} nor empty
      */
-    public TcpServiceConfig(final int port, final String hostname) {
+    public TcpServiceConfiguration(final int port, final String hostname) {
         super();
         this.port = Validate.greaterThan(port, 0, "port");
         this.hostname = Validate.notEmpty(hostname, "hostname");
@@ -39,11 +39,11 @@ public final class TcpServiceConfig {
 
     @Override
     public boolean equals(final Object o) {
-        if (!(o instanceof TcpServiceConfig)) {
+        if (!(o instanceof TcpServiceConfiguration)) {
             return false;
         }
 
-        final TcpServiceConfig that = (TcpServiceConfig) o;
+        final TcpServiceConfiguration that = (TcpServiceConfiguration) o;
         return port == that.port &&
             Objects.equals(hostname, that.hostname);
     }
