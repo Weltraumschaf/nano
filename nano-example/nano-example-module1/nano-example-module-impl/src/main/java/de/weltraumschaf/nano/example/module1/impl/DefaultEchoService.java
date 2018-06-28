@@ -117,7 +117,10 @@ public final class DefaultEchoService implements EchoService {
             }
 
             if (key.isReadable()) {
-                readClientData(key);
+                final SocketChannel connection = (SocketChannel) key.channel();
+                final String data = drainConnection(connection);
+                sendResponse(connection, data);
+                connection.close();
             }
 
             // Remove key from selected set: it's been handled.
@@ -136,13 +139,6 @@ public final class DefaultEchoService implements EchoService {
         connection.configureBlocking(false);
         // Register for reading the data of the newly accepted connection.
         connection.register(selector, SelectionKey.OP_READ);
-    }
-
-    private void readClientData(final SelectionKey key) throws IOException {
-        final SocketChannel connection = (SocketChannel) key.channel();
-        final String data = drainConnection(connection);
-        sendResponse(connection, data);
-        connection.close();
     }
 
     private String drainConnection(final SocketChannel connection) throws IOException {
@@ -173,25 +169,11 @@ public final class DefaultEchoService implements EchoService {
         }
     }
 
-    /**
-     * Converts a given string to a buffer.
-     *
-     * @param input
-     *        must not be {@code null}
-     * @return never {@code null}
-     */
     private ByteBuffer stringToBuffer(final String input) {
         Validate.notNull(input, "input");
         return ByteBuffer.wrap(input.getBytes(ENCODING));
     }
 
-    /**
-     * Converts the given buffer to a string.
-     *
-     * @param input
-     *        must not be {@code null}
-     * @return never {@code null}, maybe empty
-     */
     private String bufferTwoString(final ByteBuffer input) {
         Validate.notNull(input, "input");
         input.rewind();
