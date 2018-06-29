@@ -11,6 +11,7 @@ package de.weltraumschaf.nano.api.messaging;
  *     MY_OTHER_TOPIC;
  * }
  * }</pre>
+ *
  * @since 1.0.0
  */
 public interface MessageTopic {

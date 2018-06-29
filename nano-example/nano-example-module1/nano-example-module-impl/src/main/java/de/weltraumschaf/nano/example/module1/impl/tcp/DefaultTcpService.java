@@ -1,10 +1,11 @@
-package de.weltraumschaf.nano.example.module1.impl.echo;
+package de.weltraumschaf.nano.example.module1.impl.tcp;
 
 import de.weltraumschaf.commons.validate.Validate;
 import de.weltraumschaf.nano.api.Service;
-import de.weltraumschaf.nano.example.module1.api.TcpService;
-import de.weltraumschaf.nano.example.module1.api.TcpServiceConfiguration;
-import de.weltraumschaf.nano.example.module1.api.TcpServiceHandler;
+import de.weltraumschaf.nano.example.module1.api.tcp.TcpService;
+import de.weltraumschaf.nano.example.module1.api.tcp.TcpServiceConfiguration;
+import de.weltraumschaf.nano.example.module1.api.tcp.TcpServiceHandler;
+import de.weltraumschaf.nano.example.module1.impl.echo.DefaultEchoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +13,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * Default implementation for TCP services.
+ * <p>
+ * This implementation holds internally a {@link TcpServer} for each registered callee.
+ * </p>
  *
+ * @since 1.0.0
  */
 public final class DefaultTcpService implements TcpService {
 

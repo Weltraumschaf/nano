@@ -1,12 +1,15 @@
-package de.weltraumschaf.nano.example.module1.api;
+package de.weltraumschaf.nano.example.module1.api.tcp;
 
 import de.weltraumschaf.commons.validate.Validate;
+import de.weltraumschaf.nano.api.Service;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.util.Objects;
 
 /**
+ * This object {@link TcpService#configure(Service, Object)}  configures the} from other services which use them.
+ *
  * @since 1.0.0
  */
 @ToString

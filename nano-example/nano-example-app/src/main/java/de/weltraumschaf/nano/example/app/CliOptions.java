@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
+ * Command line options for the application.
+ *
  * @since 1.0.0
  */
 @ToString

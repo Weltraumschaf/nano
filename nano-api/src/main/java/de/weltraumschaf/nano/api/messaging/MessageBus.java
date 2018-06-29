@@ -18,7 +18,7 @@ public interface MessageBus {
     void subscribe(MessageTopic topic, MessageSubscriber subscriber);
 
     /**
-     * Unsubscribes a subscriber from a particular topic.
+     * Unsubscribe a subscriber from a particular topic.
      *
      * @param subscriber not {@code null}
      */

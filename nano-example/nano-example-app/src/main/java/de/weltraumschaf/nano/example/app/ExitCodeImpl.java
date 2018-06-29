@@ -8,10 +8,22 @@ import de.weltraumschaf.commons.system.ExitCode;
  * @since 1.0.0
  */
 public enum ExitCodeImpl implements ExitCode {
-    OK(0), ERROR(1);
+    /**
+     * Everything fine.
+     */
+    OK(0),
+    /**
+     * Something went wrong.
+     */
+    ERROR(256);
 
     private final int code;
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param code any int
+     */
     ExitCodeImpl(final int code) {
         this.code = code;
     }

@@ -1,8 +1,13 @@
 package de.weltraumschaf.nano.example.app;
 
 /**
+ * Application global constants.
+ *
  * @since 1.0.0
  */
 final class Constants {
-    static final String PROGRAM_NAME = "nanod";
+    /**
+     * Name of the final executable file.
+     */
+    static final String PROGRAM_NAME = "nano-example-app";
 }

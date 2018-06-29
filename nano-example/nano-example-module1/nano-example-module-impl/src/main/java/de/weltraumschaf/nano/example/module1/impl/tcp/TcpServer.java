@@ -1,8 +1,8 @@
-package de.weltraumschaf.nano.example.module1.impl.echo;
+package de.weltraumschaf.nano.example.module1.impl.tcp;
 
 import de.weltraumschaf.commons.validate.Validate;
-import de.weltraumschaf.nano.example.module1.api.TcpServiceConfiguration;
-import de.weltraumschaf.nano.example.module1.api.TcpServiceHandler;
+import de.weltraumschaf.nano.example.module1.api.tcp.TcpServiceConfiguration;
+import de.weltraumschaf.nano.example.module1.api.tcp.TcpServiceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
