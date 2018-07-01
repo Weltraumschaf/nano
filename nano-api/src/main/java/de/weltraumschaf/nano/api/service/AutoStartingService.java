@@ -38,10 +38,30 @@ public interface AutoStartingService extends Service {
      * method returns {@code false} the container will throw away this service immediately on shutdown and will not wait
      * for the service to stop.
      * </p>
+     * <p>
+     * By default this method returns {@code false}.
+     * </p>
      *
      * @return {@code true} if running, else {@code false}
      */
     default boolean isRunning() {
         return false;
+    }
+
+    /**
+     * Indicates that the service has stopped after calling {@link #stop()}.
+     * <p>
+     * If the {@link #start()} method runs infinitely this method must return {@code true} after the start loop has
+     * stopped running.
+     * </p>
+     *
+     * <p>
+     * By default this method returns {@code true}.
+     * </p>
+     *
+     * @return {@code false} if running, else {@code true}
+     */
+    default boolean hasStopped() {
+        return true;
     }
 }

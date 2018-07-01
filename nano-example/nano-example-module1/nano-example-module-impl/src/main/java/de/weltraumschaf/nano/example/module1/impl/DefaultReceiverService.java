@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * @since 1.0.0
  */
 public final class DefaultReceiverService implements ReceiverService, MessageSubscriber {
-    private static Logger LOG = LoggerFactory.getLogger(DefaultReceiverService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultReceiverService.class);
     private MessageBus messages;
 
     @Override

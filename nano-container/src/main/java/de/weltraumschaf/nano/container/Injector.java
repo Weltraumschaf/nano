@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @author Sven Strittmatter
  */
 final class Injector {
-    private static Logger LOG = LoggerFactory.getLogger(Injector.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Injector.class);
     private final Services services;
 
     /**

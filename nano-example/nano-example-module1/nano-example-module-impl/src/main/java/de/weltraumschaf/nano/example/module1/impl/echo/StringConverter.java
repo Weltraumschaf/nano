@@ -15,6 +15,13 @@ final class StringConverter {
     private static final Charset ENCODING = Charset.forName("UTF-8");
 
     /**
+     * Pure static utility methods.
+     */
+    StringConverter() {
+        super();
+    }
+
+    /**
      * Converts the given {@link String string} into a {@link ByteBuffer buffer}.
      *
      * @param input not {@code null}

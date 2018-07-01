@@ -15,6 +15,10 @@ public abstract class LoopingService implements AutoStartingService {
      * Volatile because must be recognized over multiple threads.
      */
     private volatile boolean running;
+    /**
+     * Volatile because must be recognized over multiple threads.
+     */
+    private volatile boolean stopped;
 
     @Override
     public final void start() {
@@ -25,6 +29,7 @@ public abstract class LoopingService implements AutoStartingService {
             doUnitOfWork();
         }
 
+        stopped = true;
         LOG.debug("Service stopped.");
     }
 
@@ -37,6 +42,11 @@ public abstract class LoopingService implements AutoStartingService {
     @Override
     public final boolean isRunning() {
         return running;
+    }
+
+    @Override
+    public final boolean hasStopped() {
+        return stopped;
     }
 
     /**

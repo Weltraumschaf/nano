@@ -18,7 +18,8 @@ import java.util.Optional;
  * @since 1.0.0
  */
 final class Services {
-    private static Logger LOG = LoggerFactory.getLogger(Services.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Services.class);
+    private static final int MILLIS_TO_WAIT = 1_000;
     private final Collection<Service> services;
 
     /**
@@ -55,25 +56,9 @@ final class Services {
      * Stops all services which are marked as {@link AutoStartingService auto starting}.
      */
     void stop() {
-        LOG.debug("Auto stop services ...", services.size());
-        final int count = services.stream()
-            .filter(s -> s instanceof AutoStartingService)
-            .map(s -> (AutoStartingService) s)
-            .filter(AutoStartingService::isRunning)
-            .mapToInt(s -> {
-                s.stop();
-                return 1;
-            }).sum();
-        LOG.debug("{} services auto stopped.");
-    }
-
-    /**
-     * Deactivates all services.
-     */
-    void deactivate() {
-        LOG.debug("Deactivating {} services ...", services.size());
-        services.forEach(Service::deactivate);
-        LOG.debug("All services deactivated.");
+        autoStop();
+        waitUntilAllServicesHasStopped();
+        deactivate();
     }
 
     /**
@@ -115,4 +100,48 @@ final class Services {
         LOG.debug("{} services auto started.", count);
     }
 
+    private void autoStop() {
+        LOG.debug("Auto stop services ...", services.size());
+        final int count = services.stream()
+            .filter(s -> s instanceof AutoStartingService)
+            .map(s -> (AutoStartingService) s)
+            .filter(AutoStartingService::isRunning)
+            .mapToInt(s -> {
+                s.stop();
+                return 1;
+            }).sum();
+        LOG.debug("{} services auto stopped.", count);
+    }
+
+    private void waitUntilAllServicesHasStopped() {
+        while (true) {
+            try {
+                LOG.debug("Wait for stopping service ...");
+
+                final int count = services.stream()
+                    .filter(s -> s instanceof AutoStartingService)
+                    .map(s -> (AutoStartingService) s)
+                    .filter(s -> !s.hasStopped())
+                    .mapToInt(s -> 1)
+                    .sum();
+
+                if (count == 0) {
+                    LOG.debug("All services stopped.");
+                    break;
+                }
+
+                LOG.debug("{} services not stopped yet! Waiting {} ms ...", count, MILLIS_TO_WAIT);
+                // FIXME BReak out anyway after some maximum wait time.
+                Thread.sleep(MILLIS_TO_WAIT);
+            } catch (final InterruptedException e) {
+                LOG.error(e.getMessage(), e);
+            }
+        }
+    }
+
+    private void deactivate() {
+        LOG.debug("Deactivating {} services ...", services.size());
+        services.forEach(Service::deactivate);
+        LOG.debug("All services deactivated.");
+    }
 }

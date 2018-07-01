@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class DefaultHelloService implements HelloService {
 
-    private static Logger LOG = LoggerFactory.getLogger(DefaultHelloService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultHelloService.class);
 
     @Override
     public void activate(final ServiceContext ctx) {

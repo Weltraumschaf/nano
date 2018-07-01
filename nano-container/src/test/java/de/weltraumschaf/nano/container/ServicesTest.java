@@ -6,6 +6,7 @@ import de.weltraumschaf.nano.api.service.Require;
 import de.weltraumschaf.nano.api.service.Service;
 import de.weltraumschaf.nano.api.service.ServiceContext;
 import de.weltraumschaf.nano.api.messaging.MessageBus;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 
@@ -30,6 +31,11 @@ public class ServicesTest {
     private final DefaultServiceThree serviceThree = new DefaultServiceThree();
     private final Services sut = new Services(Arrays.asList(
         serviceOne, serviceTwo, serviceThree));
+
+    @Before
+    public void letServiceTwoReturnHasStoppedTrue() {
+        when(serviceTwo.hasStopped()).thenReturn(true);
+    }
 
     @Test(expected = NullPointerException.class)
     public void start_messagesNotNull() {
@@ -90,8 +96,8 @@ public class ServicesTest {
     }
 
     @Test
-    public void deactivate() {
-        sut.deactivate();
+    public void stop_deactivate() {
+        sut.stop();
 
         verify(serviceOne, times(1)).deactivate();
         verify(serviceTwo, times(1)).deactivate();

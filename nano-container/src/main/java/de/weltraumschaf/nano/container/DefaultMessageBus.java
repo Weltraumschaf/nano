@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
  */
 final class DefaultMessageBus implements MessageBus {
     private static final int THREADS = 10;
-    private static Logger LOG = LoggerFactory.getLogger(DefaultMessageBus.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultMessageBus.class);
     private final Map<MessageTopic, Collection<MessageSubscriber>> subscribers = new ConcurrentHashMap<>();
     private final ExecutorService pool = Executors.newFixedThreadPool(THREADS);
 
@@ -48,8 +48,8 @@ final class DefaultMessageBus implements MessageBus {
         final MessageTopic topic = message.getTopic();
         LOG.debug("Publish message {} to topic {}.", message, topic);
 
-        final Collection<MessageSubscriber> subscribers = determineSubscribers(topic);
-        notifySubscribers(message, subscribers);
+        final Collection<MessageSubscriber> determined = determineSubscribers(topic);
+        notifySubscribers(message, determined);
     }
 
     private Collection<MessageSubscriber> determineSubscribers(final MessageTopic topic) {

@@ -21,7 +21,7 @@ import java.util.Iterator;
  * @since 1.0.0
  */
 final class TcpServer {
-    private static Logger LOG = LoggerFactory.getLogger(TcpServer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TcpServer.class);
     private static final int BUFFER_SIZE = 1_024;
     private final TcpServiceConfiguration configuration;
     private final TcpServiceHandler handler;

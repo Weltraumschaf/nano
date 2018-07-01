@@ -11,4 +11,11 @@ final class Constants {
      * Name of the final executable file.
      */
     static final String PROGRAM_NAME = "nano-example-app";
+
+    /**
+     * Only provides constants.
+     */
+    public Constants() {
+        super();
+    }
 }

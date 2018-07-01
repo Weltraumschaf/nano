@@ -12,7 +12,7 @@ import de.weltraumschaf.nano.container.Container;
  * @since 1.0.0
  */
 public final class Main extends InvokableAdapter {
-    private final String BASE_PACKAGE = "/de/weltraumschaf/nano/example/app";
+    private static final String BASE_PACKAGE = "/de/weltraumschaf/nano/example/app";
 
     private final JCommanderImproved<CliOptions> cliArgs = new JCommanderImproved<>(Constants.PROGRAM_NAME, CliOptions.class);
     private final Container container = new Container();

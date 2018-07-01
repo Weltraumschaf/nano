@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * @since 1.0.0
  */
 final class ServiceFactory {
-    private static Logger LOG = LoggerFactory.getLogger(ServiceFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ServiceFactory.class);
 
     /**
      * Creates the services for a given module.

@@ -14,7 +14,7 @@ import java.util.Random;
  * @since 1.0.0
  */
 public final class DefaultAutoService implements AutoService {
-    private static Logger LOG = LoggerFactory.getLogger(DefaultAutoService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultAutoService.class);
     private volatile boolean running;
     @Require
     private HelperService helper;

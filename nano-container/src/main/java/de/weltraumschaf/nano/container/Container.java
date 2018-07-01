@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * @author Sven Strittmatter
  */
 public final class Container {
-    private static Logger LOG = LoggerFactory.getLogger(Container.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Container.class);
 
     private final DefaultMessageBus messages = new DefaultMessageBus();
     private volatile boolean running;
@@ -32,8 +32,8 @@ public final class Container {
         LOG.info("Container starts...");
         running = true;
         final Collection<ModuleDescription> modules = findModules();
-        final Collection<Service> services = createServices(modules);
-        this.services = new Services(services);
+        final Collection<Service> created = createServices(modules);
+        this.services = new Services(created);
         this.services.start(messages);
         LOG.info("Container started.");
 
@@ -51,10 +51,9 @@ public final class Container {
         }
 
         LOG.info("Container is stopping...");
-        running = false;
         services.stop();
+        running = false;
         waitUntilStopped();
-        services.deactivate();
         LOG.info("Container stopped.");
     }
 
