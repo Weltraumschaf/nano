@@ -1,5 +1,6 @@
 package de.weltraumschaf.nano.container;
 
+import de.weltraumschaf.commons.testing.DelayedRepeater;
 import de.weltraumschaf.nano.api.AutoStartingService;
 import de.weltraumschaf.nano.api.Require;
 import de.weltraumschaf.nano.api.Service;
@@ -62,10 +63,13 @@ public class ServicesTest {
     }
 
     @Test // This test is flaky, dono why!
-    public void start_autoStart() {
+    public void start_autoStart() throws InterruptedException {
         sut.start(mock(MessageBus.class));
 
-        verify(serviceTwo, times(1)).start();
+        DelayedRepeater.create(50, 3).execute(() -> {
+            verify(serviceTwo, times(1)).start();
+            return null;
+        });
     }
 
     @Test

@@ -21,9 +21,10 @@ import java.util.concurrent.Executors;
  * @since 1.0.0
  */
 final class DefaultMessageBus implements MessageBus {
+    private static final int THREADS = 10;
     private static Logger LOG = LoggerFactory.getLogger(DefaultMessageBus.class);
     private final Map<MessageTopic, Collection<MessageSubscriber>> subscribers = new ConcurrentHashMap<>();
-    private final ExecutorService pool = Executors.newFixedThreadPool(1);
+    private final ExecutorService pool = Executors.newFixedThreadPool(THREADS);
 
     @Override
     public void subscribe(final MessageTopic topic, final MessageSubscriber subscriber) {
@@ -41,12 +42,20 @@ final class DefaultMessageBus implements MessageBus {
     }
 
     @Override
-    public void publish(final MessageTopic topic, final Message message) {
-        Validate.notNull(topic, "topic");
+    public void publish(final Message message) {
         Validate.notNull(message, "message");
+        final MessageTopic topic = message.getTopic();
         LOG.debug("Publish message {} to topic {}.", message, topic);
-        final Collection<MessageSubscriber> subscribersOfTopic = this.subscribers
-            .computeIfAbsent(topic, t -> new CopyOnWriteArrayList<>());
+
+        final Collection<MessageSubscriber> subscribers = determineSubscribers(topic);
+        notifySubscribers(message, subscribers);
+    }
+
+    private Collection<MessageSubscriber> determineSubscribers(final MessageTopic topic) {
+        return this.subscribers.computeIfAbsent(topic, t -> new CopyOnWriteArrayList<>());
+    }
+
+    private void notifySubscribers(final Message message, final Collection<MessageSubscriber> subscribersOfTopic) {
         pool.execute(() -> subscribersOfTopic.forEach(subscriber -> subscriber.receive(message)));
     }
 }

@@ -15,15 +15,18 @@ import java.util.Objects;
 public final class Message {
     @Getter
     private MessageTopic topic;
+    @Getter
+    private String content;
 
     /**
      * Dedicated constructor.
      *
      * @param topic not {@code null}
      */
-    public Message(final MessageTopic topic) {
+    public Message(final MessageTopic topic, final String content) {
         super();
         this.topic = Validate.notNull(topic, "topic");
+        this.content = Validate.notNull(content, "content");
     }
 
     @Override
@@ -33,11 +36,12 @@ public final class Message {
         }
 
         final Message message = (Message) o;
-        return Objects.equals(topic, message.topic);
+        return Objects.equals(topic, message.topic) &&
+            Objects.equals(content, message.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(topic);
+        return Objects.hash(topic, content);
     }
 }

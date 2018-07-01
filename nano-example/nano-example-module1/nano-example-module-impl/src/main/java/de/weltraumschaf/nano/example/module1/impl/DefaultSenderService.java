@@ -29,7 +29,7 @@ public final class DefaultSenderService implements SenderService {
 
         while (running) {
             try {
-                messages.publish(Topics.MY_TOPIC, new Message());
+                messages.publish(new Message(Topics.MY_TOPIC, "Message in a bottle..."));
                 Thread.sleep(5_000);
             } catch (final InterruptedException e) {
                 LOG.error(e.getMessage(), e);

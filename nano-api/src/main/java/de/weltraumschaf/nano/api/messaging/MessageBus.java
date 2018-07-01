@@ -27,8 +27,7 @@ public interface MessageBus {
     /**
      * Publishes a massage to a particular topic.
      *
-     * @param topic not {@code null}
      * @param message not {@code null}
      */
-    void publish(MessageTopic topic, Message message);
+    void publish(Message message);
 }

@@ -6,8 +6,6 @@ import de.weltraumschaf.nano.api.messaging.MessageSubscriber;
 import de.weltraumschaf.nano.api.messaging.MessageTopic;
 import org.junit.Test;
 
-import java.util.concurrent.Callable;
-
 import static org.mockito.Mockito.*;
 
 /**
@@ -32,13 +30,8 @@ public class DefaultMessageBusTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void publish_topicNotNull() {
-        sut.publish(null, new Message());
-    }
-
-    @Test(expected = NullPointerException.class)
     public void publish_messageNotNull() {
-        sut.publish(mock(MessageTopic.class), null);
+        sut.publish(null);
     }
 
     @Test
@@ -50,13 +43,13 @@ public class DefaultMessageBusTest {
         sut.subscribe(TestTopics.TOPIC_ONE, subscriberTwo);
         sut.subscribe(TestTopics.TOPIC_TWO, subscriberTwo);
 
-        final Message messageOne = new Message();
-        final Message messageTwo = new Message();
-        final Message messageThree = new Message();
+        final Message messageOne = new Message(TestTopics.TOPIC_ONE,"message one");
+        final Message messageTwo = new Message(TestTopics.TOPIC_TWO,"message two");
+        final Message messageThree = new Message(TestTopics.TOPIC_THREE,"message three");
 
-        sut.publish(TestTopics.TOPIC_ONE, messageOne);
-        sut.publish(TestTopics.TOPIC_TWO, messageTwo);
-        sut.publish(TestTopics.TOPIC_THREE, messageThree);
+        sut.publish(messageOne);
+        sut.publish(messageTwo);
+        sut.publish(messageThree);
 
         DelayedRepeater.create(50, 3).execute(() -> {
             verify(subscriberOne, times(1)).receive(messageOne);
@@ -81,18 +74,18 @@ public class DefaultMessageBusTest {
         sut.subscribe(TestTopics.TOPIC_ONE, subscriberTwo);
         sut.subscribe(TestTopics.TOPIC_TWO, subscriberTwo);
 
-        final Message messageOne = new Message();
-        final Message messageTwo = new Message();
-        final Message messageThree = new Message();
-        final Message messageFour = new Message();
+        final Message messageOne = new Message(TestTopics.TOPIC_ONE, "message one");
+        final Message messageTwo = new Message(TestTopics.TOPIC_TWO,"message two");
+        final Message messageThree = new Message(TestTopics.TOPIC_ONE, "message three");
+        final Message messageFour = new Message(TestTopics.TOPIC_TWO, "message four");
 
-        sut.publish(TestTopics.TOPIC_ONE, messageOne);
-        sut.publish(TestTopics.TOPIC_TWO, messageTwo);
+        sut.publish(messageOne);
+        sut.publish(messageTwo);
 
         sut.unsubscribe(subscriberOne);
 
-        sut.publish(TestTopics.TOPIC_ONE, messageThree);
-        sut.publish(TestTopics.TOPIC_TWO, messageFour);
+        sut.publish(messageThree);
+        sut.publish(messageFour);
 
         DelayedRepeater.create(50, 3).execute(() -> {
             verify(subscriberOne, times(1)).receive(messageOne);
