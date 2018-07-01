@@ -14,8 +14,14 @@ import java.util.Objects;
  */
 @ToString
 public final class Message {
+    /**
+     * Topic of the message (never {@code null}.
+     */
     @Getter
     private MessageTopic topic;
+    /**
+     * Content of the message (never {@code null}.
+     */
     @Getter
     private String content;
 
