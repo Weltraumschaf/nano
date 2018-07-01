@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * @author Sven Strittmatter
  */
 public abstract class LoopingService implements AutoStartingService {
-    private static Logger LOG = LoggerFactory.getLogger(LoopingService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LoopingService.class);
     /**
      * Volatile because must be recognized over multiple threads.
      */
