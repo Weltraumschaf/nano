@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
  * This is a basic implementation for services which want to loop until {@link #stop()}.
  *
  * @since 1.0.0
+ * @author Sven Strittmatter
  */
 public abstract class LoopingService implements AutoStartingService {
     private static Logger LOG = LoggerFactory.getLogger(LoopingService.class);

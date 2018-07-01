@@ -8,6 +8,9 @@ import de.weltraumschaf.nano.example.module1.api.tcp.TcpServiceConfiguration;
 
 /**
  * Default implementation of an echoe server.
+ *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public final class DefaultEchoService implements EchoService {
 

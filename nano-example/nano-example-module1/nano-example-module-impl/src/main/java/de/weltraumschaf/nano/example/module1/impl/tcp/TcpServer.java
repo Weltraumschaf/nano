@@ -17,6 +17,7 @@ import java.nio.channels.*;
 import java.util.Iterator;
 
 /**
+ * @author Sven Strittmatter
  * @since 1.0.0
  */
 final class TcpServer {

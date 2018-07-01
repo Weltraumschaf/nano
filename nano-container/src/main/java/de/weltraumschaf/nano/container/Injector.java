@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  * Injects all {@link Require required services}  on a service which need these dependencies.
  *
  * @since 1.0.0
+ * @author Sven Strittmatter
  */
 final class Injector {
     private static Logger LOG = LoggerFactory.getLogger(Injector.class);

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Creates the services.
  *
+ * @author Sven Strittmatter
  * @since 1.0.0
  */
 final class ServiceFactory {

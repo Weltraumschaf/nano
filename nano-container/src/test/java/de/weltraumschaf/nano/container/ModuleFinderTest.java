@@ -12,6 +12,9 @@ import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link ModuleFinder}.
+ *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public class ModuleFinderTest {
     private final ModuleFinder sut = new ModuleFinder();

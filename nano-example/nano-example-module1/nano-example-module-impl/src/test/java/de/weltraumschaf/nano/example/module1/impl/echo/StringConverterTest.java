@@ -9,6 +9,9 @@ import static org.hamcrest.Matchers.*;
 
 /**
  * Tests for {@link StringConverter}.
+ *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public class StringConverterTest {
 

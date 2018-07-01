@@ -6,6 +6,7 @@ import de.weltraumschaf.nano.api.messaging.MessageBus;
  * Implementations provide things a service may need to do its work.
  *
  * @since 1.0.0
+ * @author Sven Strittmatter
  */
 public interface ServiceContext {
     /**

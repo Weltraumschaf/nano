@@ -15,6 +15,7 @@ import java.util.Set;
  * </p>
  *
  * @since 1.0.0
+ * @author Sven Strittmatter
  */
 public interface ModuleDescriber {
     /**

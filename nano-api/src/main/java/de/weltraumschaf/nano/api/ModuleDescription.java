@@ -14,6 +14,7 @@ import java.util.*;
  * </p>
  *
  * @since 1.0.0
+ * @author Sven Strittmatter
  */
 @ToString
 public final class ModuleDescription {

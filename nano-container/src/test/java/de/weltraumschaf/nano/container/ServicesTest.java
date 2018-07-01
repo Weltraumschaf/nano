@@ -20,6 +20,9 @@ import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link Services}.
+ *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public class ServicesTest {
     private final ServiceOne serviceOne = mock(ServiceOne.class);

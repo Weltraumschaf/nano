@@ -5,6 +5,7 @@ import de.weltraumschaf.commons.system.ExitCode;
 /**
  * Defines exit codes.
  *
+ * @author Sven Strittmatter
  * @since 1.0.0
  */
 public enum ExitCodeImpl implements ExitCode {

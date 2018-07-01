@@ -12,6 +12,9 @@ import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link Injector}.
+ *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public class InjectorTest {
     private final DefaultRequiredServiceOne one = new DefaultRequiredServiceOne();

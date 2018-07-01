@@ -3,6 +3,7 @@ package de.weltraumschaf.nano.example.module1.api.tcp;
 /**
  * Handles TCP requests.
  *
+ * @author Sven Strittmatter
  * @since 1.0.0
  */
 public interface TcpServiceHandler {

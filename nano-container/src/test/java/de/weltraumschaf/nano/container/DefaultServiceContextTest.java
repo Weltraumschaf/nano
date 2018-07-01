@@ -10,6 +10,9 @@ import static org.mockito.Mockito.mock;
 
 /**
  * Tests for {@link DefaultServiceContext}.
+ *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public class DefaultServiceContextTest {
 

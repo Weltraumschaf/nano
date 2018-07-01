@@ -19,6 +19,7 @@ import java.util.concurrent.Executors;
  * Default implementation.
  *
  * @since 1.0.0
+ * @author Sven Strittmatter
  */
 final class DefaultMessageBus implements MessageBus {
     private static final int THREADS = 10;

@@ -8,6 +8,7 @@ import de.weltraumschaf.nano.container.Container;
 /**
  * Main application class.
  *
+ * @author Sven Strittmatter
  * @since 1.0.0
  */
 public final class Main extends InvokableAdapter {

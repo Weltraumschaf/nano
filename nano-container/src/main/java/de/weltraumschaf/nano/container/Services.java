@@ -14,6 +14,7 @@ import java.util.Optional;
 /**
  * Delegates the life cycle to all contained services.
  *
+ * @author Sven Strittmatter
  * @since 1.0.0
  */
 final class Services {

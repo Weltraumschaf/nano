@@ -10,6 +10,7 @@ import java.util.Objects;
  * Immutable class to encapsulate a sent around message.
  *
  * @since 1.0.0
+ * @author Sven Strittmatter
  */
 @ToString
 public final class Message {

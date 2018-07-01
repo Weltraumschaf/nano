@@ -12,6 +12,7 @@ import java.util.Objects;
  * Default implementation.
  *
  * @since 1.0.0
+ * @author Sven Strittmatter
  */
 @ToString
 final class DefaultServiceContext implements ServiceContext {

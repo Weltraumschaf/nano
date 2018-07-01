@@ -8,6 +8,7 @@ import java.util.*;
 /**
  * Finds all available modules in the class path via via <a href="https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html">SPI</a>.
  *
+ * @author Sven Strittmatter
  * @since 1.0.0
  */
 final class ModuleFinder {

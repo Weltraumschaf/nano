@@ -13,6 +13,9 @@ import static org.hamcrest.Matchers.*;
 
 /**
  * Tests for {@link ModuleDescriber}.
+ *
+ * @since 1.0.0
+ * @author Sven Strittmatter
  */
 public class ModuleDescriberTest {
 

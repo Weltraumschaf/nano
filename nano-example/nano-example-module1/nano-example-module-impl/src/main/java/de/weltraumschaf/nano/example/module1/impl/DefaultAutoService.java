@@ -10,7 +10,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Random;
 
 /**
- *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public final class DefaultAutoService implements AutoService {
     private static Logger LOG = LoggerFactory.getLogger(DefaultAutoService.class);

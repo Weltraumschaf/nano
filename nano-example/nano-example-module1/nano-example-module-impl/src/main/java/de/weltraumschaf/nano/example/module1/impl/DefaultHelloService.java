@@ -6,7 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public final class DefaultHelloService implements HelloService {
 

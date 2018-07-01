@@ -7,6 +7,7 @@ import lombok.ToString;
 /**
  * Command line options for the application.
  *
+ * @author Sven Strittmatter
  * @since 1.0.0
  */
 @ToString

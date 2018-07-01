@@ -13,6 +13,7 @@ package de.weltraumschaf.nano.api.messaging;
  * }</pre>
  *
  * @since 1.0.0
+ * @author Sven Strittmatter
  */
 public interface MessageTopic {
 }

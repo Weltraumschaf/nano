@@ -18,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * This implementation holds internally a {@link TcpServer} for each registered callee.
  * </p>
  *
+ * @author Sven Strittmatter
  * @since 1.0.0
  */
 public final class DefaultTcpService implements TcpService {

@@ -8,6 +8,9 @@ import java.util.UUID;
 
 /**
  * This describer is to test the module finder.
+ *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public final class FixtureModuleOne implements ModuleDescriber {
     @Override

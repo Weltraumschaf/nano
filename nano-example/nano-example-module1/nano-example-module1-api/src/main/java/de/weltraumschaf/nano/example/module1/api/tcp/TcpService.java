@@ -6,6 +6,7 @@ import de.weltraumschaf.nano.api.service.Service;
 /**
  * API of a generic TCP server which can listen on  configurable TCP ports for various other services.
  *
+ * @author Sven Strittmatter
  * @since 1.0.0
  */
 public interface TcpService extends Service, Configurable<TcpServiceConfiguration> {

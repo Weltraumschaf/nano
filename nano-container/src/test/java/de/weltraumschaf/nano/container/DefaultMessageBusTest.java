@@ -10,6 +10,9 @@ import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link DefaultMessageBus}.
+ *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public class DefaultMessageBusTest {
     private final DefaultMessageBus sut = new DefaultMessageBus();
@@ -43,9 +46,9 @@ public class DefaultMessageBusTest {
         sut.subscribe(TestTopics.TOPIC_ONE, subscriberTwo);
         sut.subscribe(TestTopics.TOPIC_TWO, subscriberTwo);
 
-        final Message messageOne = new Message(TestTopics.TOPIC_ONE,"message one");
-        final Message messageTwo = new Message(TestTopics.TOPIC_TWO,"message two");
-        final Message messageThree = new Message(TestTopics.TOPIC_THREE,"message three");
+        final Message messageOne = new Message(TestTopics.TOPIC_ONE, "message one");
+        final Message messageTwo = new Message(TestTopics.TOPIC_TWO, "message two");
+        final Message messageThree = new Message(TestTopics.TOPIC_THREE, "message three");
 
         sut.publish(messageOne);
         sut.publish(messageTwo);
@@ -75,7 +78,7 @@ public class DefaultMessageBusTest {
         sut.subscribe(TestTopics.TOPIC_TWO, subscriberTwo);
 
         final Message messageOne = new Message(TestTopics.TOPIC_ONE, "message one");
-        final Message messageTwo = new Message(TestTopics.TOPIC_TWO,"message two");
+        final Message messageTwo = new Message(TestTopics.TOPIC_TWO, "message two");
         final Message messageThree = new Message(TestTopics.TOPIC_ONE, "message three");
         final Message messageFour = new Message(TestTopics.TOPIC_TWO, "message four");
 
@@ -97,7 +100,7 @@ public class DefaultMessageBusTest {
             verify(subscriberTwo, times(1)).receive(messageTwo);
             verify(subscriberTwo, times(1)).receive(messageThree);
             verify(subscriberTwo, times(1)).receive(messageFour);
-           return null;
+            return null;
         });
     }
 

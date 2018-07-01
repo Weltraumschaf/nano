@@ -1,12 +1,10 @@
 package de.weltraumschaf.nano.container;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-
 /**
  * Tests for {@link ServiceFactory}.
+ *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public class ServiceFactoryTest {
 

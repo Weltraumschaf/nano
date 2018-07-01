@@ -10,6 +10,7 @@ import java.util.Objects;
 /**
  * This object {@link TcpService#configure(Service, Object)}  configures the} from other services which use them.
  *
+ * @author Sven Strittmatter
  * @since 1.0.0
  */
 @ToString

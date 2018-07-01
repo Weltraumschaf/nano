@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
  * This is the main component which manages the modules and its services.
  *
  * @since 1.0.0
+ * @author Sven Strittmatter
  */
 public final class Container {
     private static Logger LOG = LoggerFactory.getLogger(Container.class);

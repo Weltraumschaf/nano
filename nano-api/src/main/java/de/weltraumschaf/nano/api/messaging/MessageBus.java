@@ -7,6 +7,7 @@ package de.weltraumschaf.nano.api.messaging;
  * </p>
  *
  * @since 1.0.0
+ * @author Sven Strittmatter
  */
 public interface MessageBus {
     /**

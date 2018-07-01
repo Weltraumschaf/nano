@@ -4,6 +4,7 @@ package de.weltraumschaf.nano.api.service;
  * A service is the smallest managed component known to the container.
  *
  * @since 1.0.0
+ * @author Sven Strittmatter
  */
 public interface Service {
     /**

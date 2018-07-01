@@ -3,8 +3,9 @@ package de.weltraumschaf.nano.api.service;
 /**
  * Services implementing this interface are configurable.
  *
- * @param <T> type of configuration object
  * @since 1.0.0
+ * @param <T> type of configuration object
+ * @author Sven Strittmatter
  */
 public interface Configurable<T> {
     /**

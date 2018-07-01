@@ -10,7 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public final class DefaultSenderService extends LoopingService implements SenderService {
     private static Logger LOG = LoggerFactory.getLogger(DefaultSenderService.class);

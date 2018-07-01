@@ -8,6 +8,9 @@ import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link Describer}.
+ *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public class DescriberTest {
 

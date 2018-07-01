@@ -5,6 +5,9 @@ import de.weltraumschaf.nano.api.ModuleDescription;
 
 /**
  * Describes this module.
+ *
+ * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public final class Describer implements ModuleDescriber {
 

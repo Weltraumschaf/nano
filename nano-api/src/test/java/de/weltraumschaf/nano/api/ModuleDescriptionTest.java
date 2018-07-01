@@ -13,6 +13,9 @@ import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link ModuleDescription}.
+ *
+ * @since 1.0.0
+ * @author Sven Strittmatter
  */
 public class ModuleDescriptionTest {
 

@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 /**
  * Helper class to convert {@link String strings}.
  *
+ * @author Sven Strittmatter
  * @since 1.0.0
  */
 final class StringConverter {
