@@ -1,4 +1,4 @@
-package de.weltraumschaf.nano.api;
+package de.weltraumschaf.nano.api.service;
 
 /**
  * A service is the smallest managed component known to the container.

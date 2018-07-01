@@ -1,7 +1,7 @@
 package de.weltraumschaf.nano.example.module1.impl;
 
 import de.weltraumschaf.commons.validate.Validate;
-import de.weltraumschaf.nano.api.ServiceContext;
+import de.weltraumschaf.nano.api.service.ServiceContext;
 import de.weltraumschaf.nano.api.messaging.Message;
 import de.weltraumschaf.nano.api.messaging.MessageBus;
 import de.weltraumschaf.nano.example.module1.api.SenderService;

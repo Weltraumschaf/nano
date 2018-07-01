@@ -1,4 +1,4 @@
-package de.weltraumschaf.nano.api;
+package de.weltraumschaf.nano.api.service;
 
 /**
  * Services implementing this interface are configurable.

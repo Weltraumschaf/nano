@@ -1,4 +1,4 @@
-package de.weltraumschaf.nano.api;
+package de.weltraumschaf.nano.api.service;
 
 /**
  * Auto starting services are started/stopped automatically by the container.

@@ -1,6 +1,8 @@
 package de.weltraumschaf.nano.api;
 
 import de.weltraumschaf.commons.validate.Validate;
+import de.weltraumschaf.nano.api.service.AutoStartingService;
+import de.weltraumschaf.nano.api.service.Service;
 import org.reflections.Reflections;
 
 import java.util.Collections;

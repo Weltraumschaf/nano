@@ -1,9 +1,8 @@
 package de.weltraumschaf.nano.container;
 
 import de.weltraumschaf.commons.validate.Validate;
-import de.weltraumschaf.nano.api.messaging.MessageBus;
-import de.weltraumschaf.nano.api.Require;
-import de.weltraumschaf.nano.api.Service;
+import de.weltraumschaf.nano.api.service.Require;
+import de.weltraumschaf.nano.api.service.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

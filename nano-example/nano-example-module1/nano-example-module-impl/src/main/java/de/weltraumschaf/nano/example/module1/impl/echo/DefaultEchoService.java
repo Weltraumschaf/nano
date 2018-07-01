@@ -1,7 +1,7 @@
 package de.weltraumschaf.nano.example.module1.impl.echo;
 
-import de.weltraumschaf.nano.api.Require;
-import de.weltraumschaf.nano.api.ServiceContext;
+import de.weltraumschaf.nano.api.service.Require;
+import de.weltraumschaf.nano.api.service.ServiceContext;
 import de.weltraumschaf.nano.example.module1.api.EchoService;
 import de.weltraumschaf.nano.example.module1.api.tcp.TcpService;
 import de.weltraumschaf.nano.example.module1.api.tcp.TcpServiceConfiguration;

@@ -2,7 +2,7 @@ package de.weltraumschaf.nano.container;
 
 import de.weltraumschaf.commons.validate.Validate;
 import de.weltraumschaf.nano.api.ModuleDescription;
-import de.weltraumschaf.nano.api.Service;
+import de.weltraumschaf.nano.api.service.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

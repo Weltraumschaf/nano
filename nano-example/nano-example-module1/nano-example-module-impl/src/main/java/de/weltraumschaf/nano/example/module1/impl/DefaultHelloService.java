@@ -1,6 +1,6 @@
 package de.weltraumschaf.nano.example.module1.impl;
 
-import de.weltraumschaf.nano.api.ServiceContext;
+import de.weltraumschaf.nano.api.service.ServiceContext;
 import de.weltraumschaf.nano.example.module1.api.HelloService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,7 @@
 package de.weltraumschaf.nano.api;
 
 import de.weltraumschaf.commons.validate.Validate;
+import de.weltraumschaf.nano.api.service.Service;
 import lombok.Getter;
 import lombok.ToString;
 

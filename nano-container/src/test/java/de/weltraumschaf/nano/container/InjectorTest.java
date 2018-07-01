@@ -1,7 +1,7 @@
 package de.weltraumschaf.nano.container;
 
-import de.weltraumschaf.nano.api.Require;
-import de.weltraumschaf.nano.api.Service;
+import de.weltraumschaf.nano.api.service.Require;
+import de.weltraumschaf.nano.api.service.Service;
 import org.junit.Test;
 
 import java.util.Arrays;

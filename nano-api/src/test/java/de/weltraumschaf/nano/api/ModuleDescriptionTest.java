@@ -1,10 +1,10 @@
 package de.weltraumschaf.nano.api;
 
+import de.weltraumschaf.nano.api.service.Service;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package de.weltraumschaf.nano.api;
+package de.weltraumschaf.nano.api.service;
 
 import de.weltraumschaf.nano.api.messaging.MessageBus;
 

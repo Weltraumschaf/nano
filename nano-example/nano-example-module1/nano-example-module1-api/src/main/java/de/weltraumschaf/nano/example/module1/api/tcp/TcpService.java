@@ -1,7 +1,7 @@
 package de.weltraumschaf.nano.example.module1.api.tcp;
 
-import de.weltraumschaf.nano.api.Configurable;
-import de.weltraumschaf.nano.api.Service;
+import de.weltraumschaf.nano.api.service.Configurable;
+import de.weltraumschaf.nano.api.service.Service;
 
 /**
  * API of a generic TCP server which can listen on  configurable TCP ports for various other services.

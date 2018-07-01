@@ -1,12 +1,11 @@
 package de.weltraumschaf.nano.container;
 
 import de.weltraumschaf.commons.testing.DelayedRepeater;
-import de.weltraumschaf.nano.api.AutoStartingService;
-import de.weltraumschaf.nano.api.Require;
-import de.weltraumschaf.nano.api.Service;
-import de.weltraumschaf.nano.api.ServiceContext;
+import de.weltraumschaf.nano.api.service.AutoStartingService;
+import de.weltraumschaf.nano.api.service.Require;
+import de.weltraumschaf.nano.api.service.Service;
+import de.weltraumschaf.nano.api.service.ServiceContext;
 import de.weltraumschaf.nano.api.messaging.MessageBus;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 

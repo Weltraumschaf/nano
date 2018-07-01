@@ -1,17 +1,15 @@
 package de.weltraumschaf.nano.container;
 
 import de.weltraumschaf.commons.validate.Validate;
-import de.weltraumschaf.nano.api.AutoStartingService;
+import de.weltraumschaf.nano.api.service.AutoStartingService;
 import de.weltraumschaf.nano.api.messaging.MessageBus;
-import de.weltraumschaf.nano.api.Service;
+import de.weltraumschaf.nano.api.service.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Delegates the life cycle to all contained services.

@@ -1,5 +1,6 @@
 package de.weltraumschaf.nano.api;
 
+import de.weltraumschaf.nano.api.service.Service;
 import de.weltraumschaf.nano.api.services2find.ServiceOne;
 import de.weltraumschaf.nano.api.services2find.ServiceThree;
 import de.weltraumschaf.nano.api.services2find.ServiceTwo;
