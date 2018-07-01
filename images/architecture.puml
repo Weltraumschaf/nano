@@ -1,4 +1,4 @@
-@startuml
+@startuml Servcice Moudle Architecture
 skinparam componentStyle uml2
 
 package de.weltraumschaf.nano {

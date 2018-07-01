@@ -4,6 +4,8 @@ A very simple container to run services (inspired by OSGi).
 
 ## Architecture
 
+### Main Components
+
 ![Example application](images/architecture.png)
 
 * An application consists of _modules_.
@@ -16,5 +18,9 @@ A very simple container to run services (inspired by OSGi).
 * The service implementation exposes itself via [SPI][spi].
 * _Container_
     * The container loads all implementations of the _module descriptor_ interface.
+
+### Container Lifecycle
+
+![Container Lifecycle](images/container_sequence.png)
 
 [spi]:  https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html

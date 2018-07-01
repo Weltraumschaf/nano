@@ -1,0 +1,132 @@
+@startuml Container Lifecycle Sequence
+skinparam componentStyle uml2
+skinparam sequenceParticipant underline
+
+box "Nano container"
+participant ": Container" as Container
+participant ": ModuleFinder" as ModuleFinder
+participant ": ServiceFactory" as ServiceFactory
+participant ": Services" as Services
+participant ": Injector" as Injector
+end box
+
+box "Custom service implementations."
+participant ServiceA << Service >>
+participant ServiceB << AutoStartingService >>
+participant ServiceC << AutoStartingService >>
+end box
+
+group Container startup
+    [-> Container: start()
+    activate Container
+
+    Container -> ModuleFinder: findModules()
+    activate ModuleFinder
+    Container <-- ModuleFinder: Collection<ModuleDescription>
+    deactivate ModuleFinder
+    destroy ModuleFinder
+
+    Container -> ServiceFactory: createServices()
+    activate ServiceFactory
+
+    ServiceFactory -> ServiceA: create()
+    ServiceFactory -> ServiceB: create()
+    ServiceFactory -> ServiceC: create()
+    Container <-- ServiceFactory: Collection<Service>
+    deactivate ServiceFactory
+    destroy ServiceFactory
+
+    Container -> Services: create()
+    Container -> Services: start()
+    activate Services
+
+    Services -> Injector: injectRequiredServices()
+    activate Injector
+    Injector -> ServiceA: injectRequired
+    Injector -> ServiceB: injectRequired
+    Injector -> ServiceC: injectRequired
+    deactivate Injector
+    destroy Injector
+
+    Services -> Services: activate()
+    activate Services
+
+    Services -> ServiceA: activate()
+    activate ServiceA
+    ServiceA --> Services
+    deactivate ServiceA
+
+    Services -> ServiceB: activate()
+    activate ServiceB
+    ServiceB --> Services
+    deactivate ServiceB
+
+    Services -> ServiceC: activate()
+    activate ServiceC
+    ServiceC --> Services
+    deactivate ServiceC
+
+    deactivate Services
+
+    Services -> Services: autoStart()
+    activate Services
+
+    Services -> ServiceB: start()
+    activate ServiceB
+    deactivate ServiceB
+    hnote over ServiceB: in new thread
+
+    Services -> ServiceC: start()
+    activate ServiceC
+    deactivate ServiceC
+    hnote over ServiceC: in new thread
+
+    deactivate Services
+
+    Services --> Container
+    deactivate Services
+
+    Container -> Container: loop()
+end
+
+group Container shutdown
+    [-> Container: stop()
+    Container -> Services: stop()
+    activate Services
+    Services -> ServiceB: stop()
+    activate ServiceB
+    deactivate ServiceB
+    Services -> ServiceC: stop()
+    activate ServiceC
+    deactivate ServiceC
+    Services --> Container
+    deactivate Services
+
+    Container -> Container: waitUntilStopped()
+
+    Container -> Services: deactivate()
+    activate Services
+    Services -> ServiceA: deactivate()
+    activate ServiceA
+    deactivate ServiceA
+    destroy ServiceA
+
+    Services -> ServiceB: deactivate()
+    activate ServiceB
+    deactivate ServiceB
+    destroy ServiceB
+
+    Services -> ServiceC: deactivate()
+    activate ServiceC
+    deactivate ServiceC
+    destroy ServiceC
+
+    Services --> Container
+    deactivate Services
+    destroy Services
+
+    deactivate Container
+    destroy Container
+end
+
+@enduml
