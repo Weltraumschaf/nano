@@ -26,4 +26,18 @@ public interface AutoStartingService extends Service {
     default void stop() {
         // Empty stub implementation.
     }
+
+    /**
+     * Whether the service is running  or not.
+     * <p>
+     * This method should return {@code true}, if the {@link #start()} method is intended to run indefinitely. If this
+     * method returns {@code false} the container will throw away this service immediately on shutdown and will not wait
+     * for the service to stop.
+     * </p>
+     *
+     * @return {@code true} if running, else {@code false}
+     */
+    default boolean isRunning() {
+        return false;
+    }
 }

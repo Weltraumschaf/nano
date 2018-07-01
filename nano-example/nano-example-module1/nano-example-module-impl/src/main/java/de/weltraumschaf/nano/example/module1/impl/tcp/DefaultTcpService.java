@@ -23,7 +23,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class DefaultTcpService implements TcpService {
 
     private static Logger LOG = LoggerFactory.getLogger(DefaultEchoService.class);
-    private static final int BUFFER_SIZE = 1_024;
     private final Map<Service, TcpServiceHandler> handlers = new ConcurrentHashMap<>();
     private Map<Service, TcpServiceConfiguration> configurations = new ConcurrentHashMap<>();
     private Map<Service, TcpServer> servers = new ConcurrentHashMap<>();

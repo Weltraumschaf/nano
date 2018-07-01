@@ -1,6 +1,7 @@
 package de.weltraumschaf.nano.example.module1.impl;
 
 import de.weltraumschaf.commons.validate.Validate;
+import de.weltraumschaf.nano.api.service.LoopingService;
 import de.weltraumschaf.nano.api.service.ServiceContext;
 import de.weltraumschaf.nano.api.messaging.Message;
 import de.weltraumschaf.nano.api.messaging.MessageBus;
@@ -11,39 +12,26 @@ import org.slf4j.LoggerFactory;
 /**
  *
  */
-public final class DefaultSenderService implements SenderService {
+public final class DefaultSenderService extends LoopingService implements SenderService {
     private static Logger LOG = LoggerFactory.getLogger(DefaultSenderService.class);
     private MessageBus messages;
-    private volatile boolean running;
 
     @Override
     public void activate(final ServiceContext ctx) {
         LOG.debug("Service activation.");
         messages = Validate.notNull(ctx, "ctx").getMessages();
-        running = true;
     }
 
     @Override
-    public void start() {
-        LOG.debug("Starting service ...");
-
-        while (running) {
-            try {
-                messages.publish(new Message(Topics.MY_TOPIC, "Message in a bottle..."));
-                Thread.sleep(5_000);
-            } catch (final InterruptedException e) {
-                LOG.error(e.getMessage(), e);
-            }
+    protected void doUnitOfWork() {
+        try {
+            messages.publish(new Message(Topics.MY_TOPIC, "Message in a bottle..."));
+            Thread.sleep(5_000);
+        } catch (final InterruptedException e) {
+            LOG.error(e.getMessage(), e);
         }
-
-        LOG.debug("Service stopped.");
     }
 
-    @Override
-    public void stop() {
-        LOG.debug("Stopping service ...");
-        running = false;
-    }
 
     @Override
     public void deactivate() {
