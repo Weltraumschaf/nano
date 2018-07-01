@@ -59,6 +59,7 @@ final class Services {
         final int count = services.stream()
             .filter(s -> s instanceof AutoStartingService)
             .map(s -> (AutoStartingService) s)
+            .filter(AutoStartingService::isRunning)
             .mapToInt(s -> {
                 s.stop();
                 return 1;

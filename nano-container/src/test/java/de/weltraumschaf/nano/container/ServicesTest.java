@@ -75,10 +75,18 @@ public class ServicesTest {
     }
 
     @Test
-    public void stop() {
+    public void stop_isRunning() {
+        when(serviceTwo.isRunning()).thenReturn(true);
+
         sut.stop();
 
         verify(serviceTwo, times(1)).stop();
+    }
+    @Test
+    public void stop_isNotRunning() {
+        sut.stop();
+
+        verify(serviceTwo, never()).stop();
     }
 
     @Test

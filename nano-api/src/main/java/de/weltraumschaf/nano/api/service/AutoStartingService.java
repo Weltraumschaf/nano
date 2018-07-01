@@ -3,8 +3,8 @@ package de.weltraumschaf.nano.api.service;
 /**
  * Auto starting services are started/stopped automatically by the container.
  *
- * @since 1.0.0
  * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public interface AutoStartingService extends Service {
     /**
@@ -22,6 +22,9 @@ public interface AutoStartingService extends Service {
      * </p>
      * <p>
      * If your {@link #start()} method loops infinitely you should break that loop with this method to shutdown your service.
+     * </p>
+     * <p>
+     * This method is only called from the container, if {@link #isRunning()} returns {@code true}.
      * </p>
      */
     default void stop() {
