@@ -7,7 +7,7 @@ package de.weltraumschaf.nano.api;
  */
 public interface AutoStartingService extends Service {
     /**
-     * Is called async by the container right after {@link #activate() activation}.
+     * Is called async by the container right after {@link #activate(ServiceContext)}  activation}.
      * <p>
      * This method is intended to loop infinite, but it need not necessarily.
      * </p>
