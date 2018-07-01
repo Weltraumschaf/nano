@@ -20,7 +20,6 @@ import java.util.concurrent.Executors;
  */
 final class Services {
     private static Logger LOG = LoggerFactory.getLogger(Services.class);
-    private final ExecutorService pool = Executors.newFixedThreadPool(10);
     private final Collection<Service> services;
 
     /**
@@ -110,7 +109,7 @@ final class Services {
             .filter(s -> s instanceof AutoStartingService)
             .map(s -> (AutoStartingService) s)
             .mapToInt(s -> {
-                pool.execute(s::start);
+                new Thread(s::start).start();
                 return 1;
             }).sum();
         LOG.debug("{} services auto started.", count);

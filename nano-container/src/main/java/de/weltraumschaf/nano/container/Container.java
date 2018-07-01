@@ -30,8 +30,10 @@ public final class Container {
     public void start() {
         LOG.info("Container starts...");
         running = true;
-        services = new Services(createServices());
-        services.start(messages);
+        final Collection<ModuleDescription> modules = findModules();
+        final Collection<Service> services = createServices(modules);
+        this.services = new Services(services);
+        this.services.start(messages);
         LOG.info("Container started.");
 
         loop();
@@ -49,9 +51,13 @@ public final class Container {
 
         LOG.info("Container is stopping...");
         running = false;
-
         services.stop();
+        waitUntilStopped();
+        services.deactivate();
+        LOG.info("Container stopped.");
+    }
 
+    private void waitUntilStopped() {
         while (!stopped) {
             try {
                 LOG.debug("Wait for stopping ...");
@@ -60,9 +66,15 @@ public final class Container {
                 LOG.error(e.getMessage(), e);
             }
         }
+    }
 
-        services.deactivate();
-        LOG.info("Container stopped.");
+
+    private Collection<Service> createServices(final Collection<ModuleDescription> modules) {
+        final ServiceFactory factory = new ServiceFactory();
+        return modules.stream()
+            .map(factory::create)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
     }
 
     private Collection<ModuleDescription> findModules() {
@@ -70,14 +82,6 @@ public final class Container {
         final Collection<ModuleDescription> modules = new ModuleFinder().find();
         LOG.debug("Found {} modules.", modules.size());
         return modules;
-    }
-
-    private Collection<Service> createServices() {
-        final ServiceFactory factory = new ServiceFactory();
-        return findModules().stream()
-            .map(factory::create)
-            .flatMap(Collection::stream)
-            .collect(Collectors.toList());
     }
 
     private void loop() {
