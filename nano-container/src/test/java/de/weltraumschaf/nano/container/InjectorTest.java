@@ -2,6 +2,7 @@ package de.weltraumschaf.nano.container;
 
 import de.weltraumschaf.nano.api.service.Require;
 import de.weltraumschaf.nano.api.service.Service;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -20,11 +21,15 @@ public class InjectorTest {
     private final DefaultRequiredServiceOne one = new DefaultRequiredServiceOne();
     private final DefaultRequiredServiceTwo two = new DefaultRequiredServiceTwo();
     private final DefaultServiceWhichRequires requires = new DefaultServiceWhichRequires();
-    private final Injector sut = new Injector(new ServiceLifecycleManager(Arrays.asList(
-        one,
-        two,
-        requires
-    )));
+    private final ServiceRegistry registry = new ServiceRegistry();
+    private final Injector sut = new Injector(registry);
+
+    @Before
+    public void registerServices() {
+        registry.register(one);
+        registry.register(two);
+        registry.register(requires);
+    }
 
     @Test(expected = NullPointerException.class)
     public void injectRequiredServices_notNull() {

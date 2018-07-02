@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
  */
 final class Injector {
     private static final Logger LOG = LoggerFactory.getLogger(Injector.class);
-    private final ServiceLifecycleManager services;
+    private final ServiceRegistry services;
 
     /**
      * Dedicated constructor.
      *
      * @param services not {@code null}
      */
-    Injector(final ServiceLifecycleManager services) {
+    Injector(final ServiceRegistry services) {
         super();
         this.services = Validate.notNull(services, "services");
     }
@@ -90,7 +90,7 @@ final class Injector {
         final Class<?> requiredType = f.getType();
 
         LOG.debug("Required filed '{}' wants a service.", f);
-        final Optional<?> required = services.findService(requiredType);
+        final Optional<?> required = services.findOne(requiredType);
 
         if (!required.isPresent()) {
             throw new IllegalStateException(
