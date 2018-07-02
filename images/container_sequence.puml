@@ -99,13 +99,11 @@ group Container shutdown
     Services -> ServiceC: stop()
     activate ServiceC
     deactivate ServiceC
-    Services --> Container
+
+    Services -> Services: waitUntilAllServicesHasStopped()
+    activate Services
     deactivate Services
 
-    Container -> Container: waitUntilStopped()
-
-    Container -> Services: deactivate()
-    activate Services
     Services -> ServiceA: deactivate()
     activate ServiceA
     deactivate ServiceA
@@ -125,8 +123,8 @@ group Container shutdown
     deactivate Services
     destroy Services
 
+
     deactivate Container
-    destroy Container
 end
 
 @enduml
