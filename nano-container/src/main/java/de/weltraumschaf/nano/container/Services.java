@@ -10,9 +10,10 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 
 /**
- * Delegates the life cycle to all contained services.
+ * Delegates the life cycle to all contained managed.
  *
  * @author Sven Strittmatter
  * @since 1.0.0
@@ -20,27 +21,28 @@ import java.util.Optional;
 final class Services {
     private static final Logger LOG = LoggerFactory.getLogger(Services.class);
     private static final int MILLIS_TO_WAIT = 1_000;
-    private final Collection<Service> services;
+    private static final int MAX_RETRIES = 5;
+    private final Collection<Service> managed;
 
     /**
      * Dedicated constructor.
      *
-     * @param services not {@code null}, defensive copied
+     * @param managed not {@code null}, defensive copied
      */
-    Services(final Collection<Service> services) {
+    Services(final Collection<Service> managed) {
         super();
-        this.services = new ArrayList<>(Validate.notNull(services, "services"));
+        this.managed = new ArrayList<>(Validate.notNull(managed, "managed"));
     }
 
     /**
-     * Start all services.
+     * Start all managed.
      * <p>
      * This means:
      * </p>
      * <ol>
-     * <li>inject all required dependent services</li>
-     * <li>activate all services</li>
-     * <li>start services marked as {@link AutoStartingService}</li>
+     * <li>inject all required dependent managed</li>
+     * <li>activate all managed</li>
+     * <li>start managed marked as {@link AutoStartingService}</li>
      * </ol>
      *
      * @param messages not {@code null}
@@ -53,7 +55,7 @@ final class Services {
     }
 
     /**
-     * Stops all services which are marked as {@link AutoStartingService auto starting}.
+     * Stops all managed which are marked as {@link AutoStartingService auto starting}.
      */
     void stop() {
         autoStop();
@@ -72,37 +74,37 @@ final class Services {
             return Optional.empty();
         }
 
-        return services.stream()
+        return managed.stream()
             .filter(s -> type.isAssignableFrom(s.getClass()))
             .findFirst();
     }
 
     private void injectRequiredServices() {
         final Injector injector = new Injector(this);
-        services.forEach(injector::injectRequired);
+        managed.forEach(injector::injectRequired);
     }
 
     private void activate(final MessageBus messages) {
-        LOG.debug("Activating {} services ...", services.size());
-        services.forEach(service -> service.activate(new DefaultServiceContext(messages)));
-        LOG.debug("All services activated.");
+        LOG.debug("Activating {} managed ...", managed.size());
+        managed.forEach(service -> service.activate(new DefaultServiceContext(messages)));
+        LOG.debug("All managed activated.");
     }
 
     private void autoStart() {
-        LOG.debug("Auto start services ...");
-        final int count = services.stream()
+        LOG.debug("Auto start managed ...");
+        final int count = managed.stream()
             .filter(s -> s instanceof AutoStartingService)
             .map(s -> (AutoStartingService) s)
             .mapToInt(s -> {
                 new Thread(s::start).start();
                 return 1;
             }).sum();
-        LOG.debug("{} services auto started.", count);
+        LOG.debug("{} managed auto started.", count);
     }
 
     private void autoStop() {
-        LOG.debug("Auto stop services ...", services.size());
-        final int count = services.stream()
+        LOG.debug("Auto stop managed ...", managed.size());
+        final int count = managed.stream()
             .filter(s -> s instanceof AutoStartingService)
             .map(s -> (AutoStartingService) s)
             .filter(AutoStartingService::isRunning)
@@ -110,15 +112,15 @@ final class Services {
                 s.stop();
                 return 1;
             }).sum();
-        LOG.debug("{} services auto stopped.", count);
+        LOG.debug("{} managed auto stopped.", count);
     }
 
     private void waitUntilAllServicesHasStopped() {
-        while (true) {
-            try {
-                LOG.debug("Wait for stopping service ...");
+        LOG.debug("Wait for stopping service ...");
 
-                final int count = services.stream()
+        try {
+            Repeater.of(MILLIS_TO_WAIT, MAX_RETRIES).execute(() -> {
+                final int count = managed.stream()
                     .filter(s -> s instanceof AutoStartingService)
                     .map(s -> (AutoStartingService) s)
                     .filter(s -> !s.hasStopped())
@@ -126,22 +128,22 @@ final class Services {
                     .sum();
 
                 if (count == 0) {
-                    LOG.debug("All services stopped.");
-                    break;
+                    LOG.debug("All managed stopped.");
+                    return true;
+                } else {
+                    LOG.debug("{} managed not stopped yet! Waiting {} ms ...", count, MILLIS_TO_WAIT);
+                    return false;
                 }
-
-                LOG.debug("{} services not stopped yet! Waiting {} ms ...", count, MILLIS_TO_WAIT);
-                // FIXME BReak out anyway after some maximum wait time.
-                Thread.sleep(MILLIS_TO_WAIT);
-            } catch (final InterruptedException e) {
-                LOG.error(e.getMessage(), e);
-            }
+            });
+            LOG.debug("All managed stopped.");
+        } catch (final Exception e) {
+            LOG.error(e.getMessage(), e);
         }
     }
 
     private void deactivate() {
-        LOG.debug("Deactivating {} services ...", services.size());
-        services.forEach(Service::deactivate);
-        LOG.debug("All services deactivated.");
+        LOG.debug("Deactivating {} managed ...", managed.size());
+        managed.forEach(Service::deactivate);
+        LOG.debug("All managed deactivated.");
     }
 }
