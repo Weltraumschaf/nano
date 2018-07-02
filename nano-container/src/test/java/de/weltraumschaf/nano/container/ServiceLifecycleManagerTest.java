@@ -20,16 +20,16 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for {@link Services}.
+ * Tests for {@link ServiceLifecycleManager}.
  *
  * @author Sven Strittmatter
  * @since 1.0.0
  */
-public class ServicesTest {
+public class ServiceLifecycleManagerTest {
     private final ServiceOne serviceOne = mock(ServiceOne.class);
     private final ServiceTwo serviceTwo = mock(ServiceTwo.class);
     private final DefaultServiceThree serviceThree = new DefaultServiceThree();
-    private final Services sut = new Services(Arrays.asList(
+    private final ServiceLifecycleManager sut = new ServiceLifecycleManager(Arrays.asList(
         serviceOne, serviceTwo, serviceThree));
 
     @Before

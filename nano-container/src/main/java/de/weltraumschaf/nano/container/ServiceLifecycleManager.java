@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.concurrent.Callable;
 
 /**
  * Delegates the life cycle to all contained managed.
@@ -18,8 +17,8 @@ import java.util.concurrent.Callable;
  * @author Sven Strittmatter
  * @since 1.0.0
  */
-final class Services {
-    private static final Logger LOG = LoggerFactory.getLogger(Services.class);
+final class ServiceLifecycleManager {
+    private static final Logger LOG = LoggerFactory.getLogger(ServiceLifecycleManager.class);
     private static final int MILLIS_TO_WAIT = 1_000;
     private static final int MAX_RETRIES = 5;
     private final Collection<Service> managed;
@@ -29,7 +28,7 @@ final class Services {
      *
      * @param managed not {@code null}, defensive copied
      */
-    Services(final Collection<Service> managed) {
+    ServiceLifecycleManager(final Collection<Service> managed) {
         super();
         this.managed = new ArrayList<>(Validate.notNull(managed, "managed"));
     }

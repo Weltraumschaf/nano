@@ -20,7 +20,7 @@ public class InjectorTest {
     private final DefaultRequiredServiceOne one = new DefaultRequiredServiceOne();
     private final DefaultRequiredServiceTwo two = new DefaultRequiredServiceTwo();
     private final DefaultServiceWhichRequires requires = new DefaultServiceWhichRequires();
-    private final Injector sut = new Injector(new Services(Arrays.asList(
+    private final Injector sut = new Injector(new ServiceLifecycleManager(Arrays.asList(
         one,
         two,
         requires

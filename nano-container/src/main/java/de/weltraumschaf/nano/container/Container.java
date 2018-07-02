@@ -20,7 +20,7 @@ public final class Container {
     private final DefaultMessageBus messages = new DefaultMessageBus();
     private volatile boolean running;
     private volatile boolean stopped;
-    private Services services;
+    private ServiceLifecycleManager services;
 
     /**
      * Start the container.
@@ -33,7 +33,7 @@ public final class Container {
         running = true;
         final Collection<ModuleDescription> modules = findModules();
         final Collection<Service> created = createServices(modules);
-        this.services = new Services(created);
+        this.services = new ServiceLifecycleManager(created);
         this.services.start(messages);
         LOG.info("Container started.");
 

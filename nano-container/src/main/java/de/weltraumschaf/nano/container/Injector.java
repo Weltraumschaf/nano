@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
  */
 final class Injector {
     private static final Logger LOG = LoggerFactory.getLogger(Injector.class);
-    private final Services services;
+    private final ServiceLifecycleManager services;
 
     /**
      * Dedicated constructor.
      *
      * @param services not {@code null}
      */
-    Injector(final Services services) {
+    Injector(final ServiceLifecycleManager services) {
         super();
         this.services = Validate.notNull(services, "services");
     }
