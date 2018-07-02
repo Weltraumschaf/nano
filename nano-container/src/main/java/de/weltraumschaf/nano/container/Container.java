@@ -70,7 +70,6 @@ public final class Container {
         }
     }
 
-
     private Collection<Service> createServices(final Collection<ModuleDescription> modules) {
         final ServiceFactory factory = new ServiceFactory();
         return modules.stream()
