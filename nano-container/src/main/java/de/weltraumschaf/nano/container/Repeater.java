@@ -1,11 +1,17 @@
 package de.weltraumschaf.nano.container;
 
 import de.weltraumschaf.commons.validate.Validate;
+import lombok.Getter;
 
 import java.util.concurrent.Callable;
 
 /**
- * Repeated the given {@link Callable} until a {@link #waitMillis wait period} and {@link #maxRetries retries} is exceeded.
+ * Repeated the given "failing" {@link Callable} until a {@link #waitMillis wait period} and {@link #maxRetries retries}
+ * is exceeded.
+ * <p>
+ * The callable is considered "failing", if it returns {@link Boolean#FALSE}. So the repeater will call it again and again,
+ * if it returns {@link Boolean#FALSE}, until it runs out the maximum retries.
+ * </p>
  *
  * @author Sven Strittmatter
  * @since 1.0.0
@@ -15,11 +21,13 @@ final class Repeater {
     /**
      * Milliseconds to wait before invoking {@link Callable#call()}.
      */
+    @Getter
     private final int waitMillis;
 
     /**
-     * Maximum amount of retries before failing.
+     * Maximum amount of retries before stop trying.
      */
+    @Getter
     private final int maxRetries;
 
     /**
@@ -58,9 +66,10 @@ final class Repeater {
      * </p>
      *
      * @param repeated not {@code null}
+     * @return {@code true} if the callable returned {@code true} before exceeding the {@link #maxRetries}, else {@code false}
      * @throws Exception if the given {@link Callable} failed
      */
-    void execute(final Callable<Boolean> repeated) throws Exception {
+    boolean execute(final Callable<Boolean> repeated) throws Exception {
         Validate.notNull(repeated, "repeated");
         int currentRetries = 1;
 
@@ -68,7 +77,7 @@ final class Repeater {
             Thread.sleep(this.waitMillis);
 
             if (repeated.call()) {
-                break;
+                return true;
             }
 
             if (currentRetries == this.maxRetries) {
@@ -78,5 +87,6 @@ final class Repeater {
             ++currentRetries;
         }
 
+        return false;
     }
 }
