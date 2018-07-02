@@ -64,4 +64,13 @@ final class ServiceRegistry {
             .map(s -> (AutoStartingService) s)
             .collect(Collectors.toList()));
     }
+
+    /**
+     * Number of registered services.
+     *
+     * @return not negative
+     */
+    int size() {
+        return services.size();
+    }
 }

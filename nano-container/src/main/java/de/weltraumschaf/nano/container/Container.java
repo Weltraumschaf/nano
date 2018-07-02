@@ -11,16 +11,17 @@ import java.util.stream.Collectors;
 /**
  * This is the main component which manages the modules and its services.
  *
- * @since 1.0.0
  * @author Sven Strittmatter
+ * @since 1.0.0
  */
 public final class Container {
     private static final Logger LOG = LoggerFactory.getLogger(Container.class);
 
     private final DefaultMessageBus messages = new DefaultMessageBus();
+    private final ServiceRegistry registry = new ServiceRegistry();
+    private ServiceLifecycleManager services = new ServiceLifecycleManager(registry);
     private volatile boolean running;
     private volatile boolean stopped;
-    private ServiceLifecycleManager services;
 
     /**
      * Start the container.
@@ -33,13 +34,11 @@ public final class Container {
         running = true;
         final Collection<ModuleDescription> modules = findModules();
         final Collection<Service> created = createServices(modules);
-        final ServiceRegistry registry = new ServiceRegistry();
         created.forEach(registry::register);
 
         final Injector injector = new Injector(registry);
         registry.findAll().forEach(injector::injectRequired);
 
-        this.services = new ServiceLifecycleManager(created);
         this.services.start(messages);
         LOG.info("Container started.");
 

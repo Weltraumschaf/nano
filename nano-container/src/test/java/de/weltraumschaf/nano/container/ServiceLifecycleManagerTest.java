@@ -28,8 +28,15 @@ public class ServiceLifecycleManagerTest {
     private final ServiceOne serviceOne = mock(ServiceOne.class);
     private final ServiceTwo serviceTwo = mock(ServiceTwo.class);
     private final ServiceThree serviceThree = mock(ServiceThree.class);
-    private final ServiceLifecycleManager sut = new ServiceLifecycleManager(Arrays.asList(
-        serviceOne, serviceTwo, serviceThree));
+    private final ServiceRegistry registry = new ServiceRegistry();
+    private final ServiceLifecycleManager sut = new ServiceLifecycleManager(registry);
+
+    @Before
+    public void registerServices() {
+        registry.register(serviceOne);
+        registry.register(serviceTwo);
+        registry.register(serviceThree);
+    }
 
     @Before
     public void letServiceTwoReturnHasStoppedTrue() {
@@ -92,28 +99,6 @@ public class ServiceLifecycleManagerTest {
 
         verify(serviceOne, times(1)).deactivate();
         verify(serviceTwo, times(1)).deactivate();
-    }
-
-    @Test
-    public void findService_forNull() {
-        final Optional<Service> service = sut.findService(null);
-
-        assertThat(service.isPresent(), is(false));
-    }
-
-    @Test
-    public void findService_found() {
-        final Optional<Service> service = sut.findService(ServiceOne.class);
-
-        assertThat(service.isPresent(), is(true));
-        assertThat(service.get(), is(serviceOne));
-    }
-
-    @Test
-    public void findService_noFound() {
-        final Optional<Service> service = sut.findService(String.class);
-
-        assertThat(service.isPresent(), is(false));
     }
 
     interface ServiceOne extends Service {

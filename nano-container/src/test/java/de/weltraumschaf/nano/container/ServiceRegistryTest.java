@@ -4,6 +4,8 @@ import de.weltraumschaf.nano.api.service.AutoStartingService;
 import de.weltraumschaf.nano.api.service.Service;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
@@ -44,14 +46,29 @@ public class ServiceRegistryTest {
     }
 
     @Test
-    @SuppressWarnings("ConstantConditions")
+    public void findOne_forNull() {
+        final Optional<Service> service = sut.findOne(null);
+
+        assertThat(service.isPresent(), is(false));
+    }
+
+    @Test
+    public void findService_noFound() {
+        final Optional<Service> service = sut.findOne(String.class);
+
+        assertThat(service.isPresent(), is(false));
+    }
+
+    @Test
     public void findOne() {
         final ServiceOne one = mock(ServiceOne.class);
         sut.register(one);
         final ServiceTwo two = mock(ServiceTwo.class);
         sut.register(two);
 
+        assertThat(sut.findOne(ServiceOne.class).isPresent(), is(true));
         assertThat(sut.findOne(ServiceOne.class).get(), is(sameInstance(one)));
+        assertThat(sut.findOne(ServiceTwo.class).isPresent(), is(true));
         assertThat(sut.findOne(ServiceTwo.class).get(), is(sameInstance(two)));
     }
 
