@@ -32,12 +32,8 @@ public final class Container {
     public void start() {
         LOG.info("Container starts...");
         running = true;
-        final Collection<ModuleDescription> modules = findModules();
-        final Collection<Service> created = createServices(modules);
-        created.forEach(registry::register);
-
-        final Injector injector = new Injector(registry);
-        registry.findAll().forEach(injector::injectRequired);
+        registerServices();
+        injectRequiredServices();
 
         this.services.start(messages);
         LOG.info("Container started.");
@@ -45,6 +41,17 @@ public final class Container {
         loop();
 
         stopped = true;
+    }
+
+    private void injectRequiredServices() {
+        final Injector injector = new Injector(registry);
+        registry.findAll().forEach(injector::injectRequired);
+    }
+
+    private void registerServices() {
+        final Collection<ModuleDescription> modules = findModules();
+        final Collection<Service> created = createServices(modules);
+        created.forEach(registry::register);
     }
 
     /**
