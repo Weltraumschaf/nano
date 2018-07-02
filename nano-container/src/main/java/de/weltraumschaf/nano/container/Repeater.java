@@ -1,8 +1,6 @@
 package de.weltraumschaf.nano.container;
 
 import de.weltraumschaf.commons.validate.Validate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Callable;
 
@@ -14,7 +12,6 @@ import java.util.concurrent.Callable;
  */
 final class Repeater {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Repeater.class);
     /**
      * Milliseconds to wait before invoking {@link Callable#call()}.
      */
@@ -77,8 +74,9 @@ final class Repeater {
             if (currentRetries == this.maxRetries) {
                 break;
             }
+
+            ++currentRetries;
         }
 
-        ++currentRetries;
     }
 }

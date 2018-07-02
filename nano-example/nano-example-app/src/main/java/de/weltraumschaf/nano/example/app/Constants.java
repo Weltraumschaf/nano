@@ -15,7 +15,7 @@ final class Constants {
     /**
      * Only provides constants.
      */
-    public Constants() {
+    private Constants() {
         super();
     }
 }
