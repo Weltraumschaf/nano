@@ -6,8 +6,8 @@ box "Nano container"
 participant ": Container" as Container
 participant ": ModuleFinder" as ModuleFinder
 participant ": ServiceFactory" as ServiceFactory
-participant ": ServiceLifecycleManager" as ServiceLifecycleManager
 participant ": Injector" as Injector
+participant ": ServiceLifecycleManager" as ServiceLifecycleManager
 end box
 
 box "Custom service implementations."
@@ -37,16 +37,17 @@ group Container startup
     destroy ServiceFactory
 
     Container -> ServiceLifecycleManager: create()
-    Container -> ServiceLifecycleManager: start()
-    activate ServiceLifecycleManager
-
-    ServiceLifecycleManager -> Injector: injectRequiredServices()
+    Container -> Injector: injectRequiredServices()
     activate Injector
     Injector -> ServiceA: injectRequired
     Injector -> ServiceB: injectRequired
     Injector -> ServiceC: injectRequired
     deactivate Injector
     destroy Injector
+
+    Container -> ServiceLifecycleManager: start()
+    activate ServiceLifecycleManager
+
 
     ServiceLifecycleManager -> ServiceLifecycleManager: activate()
     activate ServiceLifecycleManager

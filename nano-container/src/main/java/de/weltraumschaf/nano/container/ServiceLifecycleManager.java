@@ -48,7 +48,6 @@ final class ServiceLifecycleManager {
      */
     void start(final MessageBus messages) {
         Validate.notNull(messages, "getMessages");
-        injectRequiredServices();
         activate(messages);
         autoStart();
     }
@@ -76,11 +75,6 @@ final class ServiceLifecycleManager {
         return managed.stream()
             .filter(s -> type.isAssignableFrom(s.getClass()))
             .findFirst();
-    }
-
-    private void injectRequiredServices() {
-        final Injector injector = new Injector(this);
-        managed.forEach(injector::injectRequired);
     }
 
     private void activate(final MessageBus messages) {

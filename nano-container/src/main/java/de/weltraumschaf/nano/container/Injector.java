@@ -62,7 +62,7 @@ final class Injector {
     /**
      * Finds all required fields.
      * <p>
-     * Yhis method gous through the whole class hierarchy to find required fields
+     * This method goes through the whole class hierarchy to find required fields
      * </p>
      *
      * @param type may be {@code null}

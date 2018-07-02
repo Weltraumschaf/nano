@@ -34,6 +34,8 @@ public final class Container {
         final Collection<ModuleDescription> modules = findModules();
         final Collection<Service> created = createServices(modules);
         this.services = new ServiceLifecycleManager(created);
+        final Injector injector = new Injector(this.services);
+        created.forEach(injector::injectRequired);
         this.services.start(messages);
         LOG.info("Container started.");
 

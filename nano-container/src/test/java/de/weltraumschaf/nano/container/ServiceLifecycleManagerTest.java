@@ -1,11 +1,10 @@
 package de.weltraumschaf.nano.container;
 
 import de.weltraumschaf.commons.testing.DelayedRepeater;
+import de.weltraumschaf.nano.api.messaging.MessageBus;
 import de.weltraumschaf.nano.api.service.AutoStartingService;
-import de.weltraumschaf.nano.api.service.Require;
 import de.weltraumschaf.nano.api.service.Service;
 import de.weltraumschaf.nano.api.service.ServiceContext;
-import de.weltraumschaf.nano.api.messaging.MessageBus;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
@@ -28,7 +27,7 @@ import static org.mockito.Mockito.*;
 public class ServiceLifecycleManagerTest {
     private final ServiceOne serviceOne = mock(ServiceOne.class);
     private final ServiceTwo serviceTwo = mock(ServiceTwo.class);
-    private final DefaultServiceThree serviceThree = new DefaultServiceThree();
+    private final ServiceThree serviceThree = mock(ServiceThree.class);
     private final ServiceLifecycleManager sut = new ServiceLifecycleManager(Arrays.asList(
         serviceOne, serviceTwo, serviceThree));
 
@@ -40,14 +39,6 @@ public class ServiceLifecycleManagerTest {
     @Test(expected = NullPointerException.class)
     public void start_messagesNotNull() {
         sut.start(null);
-    }
-
-    @Test
-    public void start_injectRequiredServices() {
-        sut.start(mock(MessageBus.class));
-
-        assertThat(serviceThree.one, is(serviceOne));
-        assertThat(serviceThree.two, is(serviceTwo));
     }
 
     @Test
@@ -135,10 +126,4 @@ public class ServiceLifecycleManagerTest {
     interface ServiceThree extends Service {
     }
 
-    private static class DefaultServiceThree implements ServiceThree {
-        @Require
-        private ServiceOne one;
-        @Require
-        private ServiceTwo two;
-    }
 }
