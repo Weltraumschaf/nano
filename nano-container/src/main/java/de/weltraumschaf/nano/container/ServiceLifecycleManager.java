@@ -1,13 +1,10 @@
 package de.weltraumschaf.nano.container;
 
 import de.weltraumschaf.commons.validate.Validate;
-import de.weltraumschaf.nano.api.service.AutoStartingService;
 import de.weltraumschaf.nano.api.messaging.MessageBus;
-import de.weltraumschaf.nano.api.service.Service;
+import de.weltraumschaf.nano.api.service.AutoStartingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
 
 /**
  * Delegates the life cycle to all contained services.
@@ -62,7 +59,10 @@ final class ServiceLifecycleManager {
     private void activate(final MessageBus messages) {
         LOG.debug("Activating {} services ...", services.size());
         services.findAll()
-            .forEach(service -> service.activate(new DefaultServiceContext(messages)));
+            .forEach(service -> {
+                LOG.debug("Activating service: {}.", service);
+                service.activate(new DefaultServiceContext(messages));
+            });
         LOG.debug("All services activated.");
     }
 
@@ -70,8 +70,9 @@ final class ServiceLifecycleManager {
         LOG.debug("Auto start services ...");
         final int count = services.findAutoStarting()
             .stream()
-            .mapToInt(s -> {
-                new Thread(s::start).start();
+            .mapToInt(service -> {
+                LOG.debug("Auto start service: {}.", service);
+                new Thread(service::start).start();
                 return 1;
             }).sum();
         LOG.debug("{} services auto started.", count);
@@ -82,8 +83,9 @@ final class ServiceLifecycleManager {
         final int count = services.findAutoStarting()
             .stream()
             .filter(AutoStartingService::isRunning)
-            .mapToInt(s -> {
-                s.stop();
+            .mapToInt(service -> {
+                LOG.debug("Auto stop service: {}.", service);
+                service.stop();
                 return 1;
             }).sum();
         LOG.debug("{} services auto stopped.", count);
@@ -96,8 +98,11 @@ final class ServiceLifecycleManager {
             Repeater.of(MILLIS_TO_WAIT, MAX_RETRIES).execute(() -> {
                 final int count = services.findAutoStarting()
                     .stream()
-                    .filter(s -> !s.hasStopped())
-                    .mapToInt(s -> 1)
+                    .filter(service -> !service.hasStopped())
+                    .mapToInt(service -> {
+                        LOG.debug("Service not yet stopped: {}.", service);
+                        return 1;
+                    })
                     .sum();
 
                 if (count == 0) {
@@ -116,7 +121,10 @@ final class ServiceLifecycleManager {
 
     private void deactivate() {
         LOG.debug("Deactivating {} services ...", services.size());
-        services.findAll().forEach(Service::deactivate);
+        services.findAll().forEach(service -> {
+            LOG.debug("Deactivating service: {}.", service);
+            service.deactivate();
+        });
         LOG.debug("All services deactivated.");
     }
 }
