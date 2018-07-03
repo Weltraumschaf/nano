@@ -39,15 +39,18 @@ final class ServiceFactory {
             final Iterator<? extends Service> iterator = ServiceLoader.load(api).iterator();
 
             if (!iterator.hasNext()) {
-                throw new IllegalStateException(String.format("No implementation found for service API '%s'!", api));
+                throw new IllegalStateException(
+                    String.format("No implementation found for service API '%s'!", api.getCanonicalName()));
             }
 
             final Service first = iterator.next();
 
             if (iterator.hasNext()) {
                 throw new IllegalStateException(
-                    String.format("More than one implementation found for service API '%s'! Can't decide which one to use.",
-                        api));
+                    String.format(
+                        "More than one implementation found for service API '%s'! " +
+                            "Can't decide which one to use.",
+                        api.getCanonicalName()));
             }
 
             return first;
