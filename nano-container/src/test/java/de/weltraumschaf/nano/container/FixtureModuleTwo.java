@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 /**
- * This describer is to test the module finder.
+ * This describer is to test the {@link ModuleFinder module finder}.
  *
  * @author Sven Strittmatter
  * @since 1.0.0

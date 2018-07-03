@@ -1,5 +1,6 @@
 package de.weltraumschaf.nano.container;
 
+import de.weltraumschaf.nano.api.ModuleDescriber;
 import de.weltraumschaf.nano.api.ModuleDescription;
 import org.junit.Test;
 
@@ -36,4 +37,5 @@ public class ModuleFinderTest {
                 Collections.emptyList())
         ));
     }
+
 }
