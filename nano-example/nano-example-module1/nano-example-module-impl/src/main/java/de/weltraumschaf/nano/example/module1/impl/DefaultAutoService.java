@@ -16,6 +16,7 @@ import java.util.Random;
 public final class DefaultAutoService implements AutoService {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultAutoService.class);
     private volatile boolean running;
+    private volatile boolean stopped;
     @Require
     private HelperService helper;
 
@@ -40,6 +41,7 @@ public final class DefaultAutoService implements AutoService {
             }
         }
 
+        stopped = true;
         LOG.debug("Service stopped.");
     }
 
@@ -47,6 +49,16 @@ public final class DefaultAutoService implements AutoService {
     public void stop() {
         LOG.debug("Stopping service ...");
         running = false;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+
+    @Override
+    public boolean hasStopped() {
+        return stopped;
     }
 
     @Override

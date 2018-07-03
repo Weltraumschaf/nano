@@ -31,4 +31,8 @@ public interface TcpService extends Service, Configurable<TcpServiceConfiguratio
      * @param callee not {@code null
      */
     void stop(Service callee);
+
+    boolean isRunning(final Service callee);
+
+    boolean hasStopped(final Service callee);
 }

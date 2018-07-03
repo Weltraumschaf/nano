@@ -48,7 +48,7 @@ final class TcpServer {
     }
 
     /**
-     * Strat the server non-blocking in own thread.
+     * Start the server non-blocking in own thread.
      */
     void start() {
         LOG.debug("Starting TCP server on port {} ...", configuration.getPort());
@@ -85,6 +85,10 @@ final class TcpServer {
         closeSilently(channel);
         closeSilently(selector);
         LOG.debug("TCP server stopped on port {}.", configuration.getPort());
+    }
+
+    boolean isListening() {
+        return listening;
     }
 
     private void serve() {

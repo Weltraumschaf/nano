@@ -36,6 +36,16 @@ public final class DefaultReverseEcho implements ReverseEcho {
         server.stop(this);
     }
 
+    @Override
+    public boolean isRunning() {
+        return server.isRunning(this);
+    }
+
+    @Override
+    public boolean hasStopped() {
+        return server.hasStopped(this);
+    }
+
     private byte[] reverse(final byte[] request) {
         return new StringBuilder()
             .append(new String(request, CHARSET))

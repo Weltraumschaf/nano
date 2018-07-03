@@ -32,4 +32,14 @@ public final class DefaultEchoService implements EchoService {
     public void stop() {
         server.stop(this);
     }
+
+    @Override
+    public boolean isRunning() {
+        return server.isRunning(this);
+    }
+
+    @Override
+    public boolean hasStopped() {
+        return server.hasStopped(this);
+    }
 }

@@ -72,13 +72,27 @@ public final class DefaultTcpService implements TcpService {
     }
 
     @Override
+    public boolean isRunning(final Service callee) {
+        if (servers.containsKey(callee)) {
+            return servers.get(callee).isListening();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean hasStopped(final Service callee) {
+        return !isRunning(callee);
+    }
+
+    @Override
     public void deactivate() {
-        LOG.debug("Deactivating echo server...");
-        servers.values().forEach(TcpServer::stop);
+        LOG.debug("Deactivating TCP service...");
+        servers.values().stream().filter(TcpServer::isListening).forEach(TcpServer::stop);
         handlers.clear();
         configurations.clear();
         servers.clear();
-        LOG.debug("Echo server deactivated.");
+        LOG.debug("TCP service deactivated.");
     }
 
     private void assertPreconditions(final Service callee) {
