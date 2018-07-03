@@ -93,7 +93,6 @@ final class ServiceLifecycleManager {
         LOG.debug("Auto stop services ...", services.size());
         final int count = services.findAutoStarting()
             .stream()
-            .filter(AutoStartingService::isRunning)
             .peek(service -> LOG.debug("Auto stop service: {}.", service))
             .mapToInt(service -> {
                 service.stop();

@@ -37,11 +37,11 @@ final class Injector {
      */
     void injectRequired(final Service target) {
         Validate.notNull(target, "target");
-        LOG.debug("Inject required fields to {} ...", target.getClass().getCanonicalName());
+        LOG.debug("Inject required fields to '{}' ...", target);
         final Collection<Field> found = findRequiredFields(target.getClass());
 
         if (found.isEmpty()) {
-            LOG.debug("No required fields found for '{}'.", target.getClass().getCanonicalName());
+            LOG.debug("No required fields found for '{}'.", target);
             return;
         }
 
@@ -80,7 +80,7 @@ final class Injector {
             .filter(f -> f.isAnnotationPresent(Require.class))
             .collect(Collectors.toList());
 
-        if (null != type.getSuperclass()) {
+        if (null != type.getSuperclass() && Object.class != type.getSuperclass()) {
             found.addAll(findRequiredFields(type.getSuperclass()));
         }
 

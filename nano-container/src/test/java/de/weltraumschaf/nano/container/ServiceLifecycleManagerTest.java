@@ -86,12 +86,6 @@ public class ServiceLifecycleManagerTest {
 
         verify(serviceTwo, times(1)).stop();
     }
-    @Test
-    public void stop_isNotRunning() {
-        sut.stop();
-
-        verify(serviceTwo, never()).stop();
-    }
 
     @Test
     public void stop_deactivate() {
