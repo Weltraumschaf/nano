@@ -38,4 +38,25 @@ public class ModuleFinderTest {
         ));
     }
 
+    public static final class FixtureModuleOne implements ModuleDescriber {
+        @Override
+        public ModuleDescription describe() {
+            return new ModuleDescription(
+                UUID.fromString("06260abf-03cd-463c-9169-b2094822791b"),
+                "fixture-module-one",
+                "This is a test module.",
+                Collections.emptyList());
+        }
+    }
+
+    public static final class FixtureModuleTwo implements ModuleDescriber {
+        @Override
+        public ModuleDescription describe() {
+            return new ModuleDescription(
+                UUID.fromString("ac4b35aa-6155-4f27-aeed-7707c5a50a65"),
+                "fixture-module-two",
+                "This is a test module.",
+                Collections.emptyList());
+        }
+    }
 }
