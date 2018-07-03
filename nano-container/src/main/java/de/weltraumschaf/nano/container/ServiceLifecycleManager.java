@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.Callable;
 
 /**
@@ -135,7 +136,7 @@ final class ServiceLifecycleManager {
 
         private ServiceStopper(final Collection<AutoStartingService> services) {
             super();
-            this.services = new ArrayList<>(Validate.notNull(services, "services"));
+            this.services = Collections.unmodifiableCollection(Validate.notNull(services, "services"));
         }
 
         @Override

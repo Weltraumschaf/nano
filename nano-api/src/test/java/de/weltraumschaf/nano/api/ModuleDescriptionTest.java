@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -19,9 +20,12 @@ import static org.junit.Assert.assertThat;
  */
 public class ModuleDescriptionTest {
 
-    private final UUID id = UUID.randomUUID();
+    private final UUID id = UUID.fromString("7f0fbe47-87bd-4280-b9f7-b7badaa81f43");
+    private final Class<Foo> foo = Foo.class;
+    private final Class<Bar> bar = Bar.class;
+    private final Class<Baz> baz = Baz.class;
     private final HashSet<Class<? extends Service>> services = new HashSet<>(Arrays.asList(
-        Foo.class, Bar.class, Baz.class
+        foo, bar, baz
     ));
     private final ModuleDescription sut = new ModuleDescription(
         id,
@@ -50,7 +54,14 @@ public class ModuleDescriptionTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void getServices() {
+        assertThat(sut.getServices(), containsInAnyOrder(foo, bar, baz));
+    }
+
+    @Test
+    public void format() {
+        assertThat(sut.format(), is("'name' (7f0fbe47-87bd-4280-b9f7-b7badaa81f43)"));
     }
 
     interface Foo extends Service {

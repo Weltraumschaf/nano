@@ -13,8 +13,8 @@ import java.util.*;
  * A module as a unique id, a name, a description and a set of service interfaces.
  * </p>
  *
- * @since 1.0.0
  * @author Sven Strittmatter
+ * @since 1.0.0
  */
 @ToString
 public final class ModuleDescription {
@@ -72,4 +72,7 @@ public final class ModuleDescription {
         return Objects.hash(id, name, description, services);
     }
 
+    public String format() {
+        return String.format("'%s' (%s)", name, id);
+    }
 }

@@ -1,4 +1,4 @@
-package de.weltraumschaf.nano.example.module1.impl.echo;
+package de.weltraumschaf.nano.example.module1.impl.tcp;
 
 import de.weltraumschaf.commons.validate.Validate;
 

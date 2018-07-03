@@ -5,7 +5,7 @@ import de.weltraumschaf.nano.api.service.Service;
 import de.weltraumschaf.nano.example.module1.api.tcp.TcpService;
 import de.weltraumschaf.nano.example.module1.api.tcp.TcpServiceConfiguration;
 import de.weltraumschaf.nano.example.module1.api.tcp.TcpServiceHandler;
-import de.weltraumschaf.nano.example.module1.impl.echo.DefaultEchoService;
+import de.weltraumschaf.nano.example.module1.impl.DefaultEchoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,11 +51,11 @@ public final class DefaultTcpService implements TcpService {
         final TcpServiceConfiguration configuration = configurations.get(callee);
         final int port = configuration.getPort();
 
-        LOG.debug("Starting echo server at port {0} ...", port);
+        LOG.debug("Starting echo server at port {} ...", port);
         final TcpServer server = new TcpServer(configuration, handlers.get(callee));
         server.start();
         servers.put(callee, server);
-        LOG.debug("Echo server started at port {0} ...", port);
+        LOG.debug("Echo server started at port {} ...", port);
     }
 
 

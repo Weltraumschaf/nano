@@ -1,4 +1,4 @@
-package de.weltraumschaf.nano.example.module1.impl.echo;
+package de.weltraumschaf.nano.example.module1.impl;
 
 import de.weltraumschaf.nano.api.service.Require;
 import de.weltraumschaf.nano.api.service.ServiceContext;

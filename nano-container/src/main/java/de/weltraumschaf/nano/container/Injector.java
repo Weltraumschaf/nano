@@ -37,6 +37,7 @@ final class Injector {
      */
     void injectRequired(final Service target) {
         Validate.notNull(target, "target");
+        LOG.debug("Inject required fields to {} ...", target.getClass().getCanonicalName());
         final Collection<Field> found = findRequiredFields(target.getClass());
 
         if (found.isEmpty()) {

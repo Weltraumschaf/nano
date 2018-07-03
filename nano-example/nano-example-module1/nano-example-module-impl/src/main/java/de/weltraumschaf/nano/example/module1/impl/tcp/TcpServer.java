@@ -17,6 +17,8 @@ import java.nio.channels.*;
 import java.util.Iterator;
 
 /**
+ * Simple NIO based TCP server.
+ *
  * @author Sven Strittmatter
  * @since 1.0.0
  */
@@ -28,20 +30,31 @@ final class TcpServer {
     private Selector selector;
     private ServerSocket server;
     private ServerSocketChannel channel;
-    private volatile boolean listening; // Volatile because must be recognized over multiple threads.
+    /**
+     * Volatile because must be recognized over multiple threads.
+     */
+    private volatile boolean listening;
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param configuration not {@code null}
+     * @param handler       not {@code null}
+     */
     TcpServer(final TcpServiceConfiguration configuration, final TcpServiceHandler handler) {
         super();
         this.configuration = Validate.notNull(configuration, "configuration");
         this.handler = Validate.notNull(handler, "handler");
     }
 
+    /**
+     * Strat the server non-blocking in own thread.
+     */
     void start() {
-        LOG.debug("Starting TCP server ...");
+        LOG.debug("Starting TCP server on port {} ...", configuration.getPort());
 
         try {
             selector = Selector.open();
-
             channel = ServerSocketChannel.open();
             channel.configureBlocking(false);
             channel.register(selector, SelectionKey.OP_ACCEPT);
@@ -59,16 +72,19 @@ final class TcpServer {
         }
 
         new Thread(this::serve).start();
-        LOG.debug("TCP server started at port {0} ...", configuration.getPort());
+        LOG.debug("TCP server started at port {} ...", configuration.getPort());
     }
 
+    /**
+     * Stops the server.
+     */
     void stop() {
-        LOG.debug("Stopping TCP server ...");
+        LOG.debug("Stopping TCP server on port {} ...", configuration.getPort());
         listening = false;
         closeSilently(server);
         closeSilently(channel);
         closeSilently(selector);
-        LOG.debug("TCP server stopped.");
+        LOG.debug("TCP server stopped on port {}.", configuration.getPort());
     }
 
     private void serve() {
@@ -85,7 +101,8 @@ final class TcpServer {
                 querySelectorKeys();
             }
         } catch (final IOException e) {
-            LOG.error("The echo server terminated because of an exception: {}", e.getMessage(), e);
+            LOG.error("The echo server on port {} terminated because of an exception: {}",
+                configuration.getPort(), e.getMessage(), e);
         }
     }
 

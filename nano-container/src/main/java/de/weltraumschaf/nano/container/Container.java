@@ -43,17 +43,6 @@ public final class Container {
         stopped = true;
     }
 
-    private void injectRequiredServices() {
-        final Injector injector = new Injector(registry);
-        registry.findAll().forEach(injector::injectRequired);
-    }
-
-    private void registerServices() {
-        final Collection<ModuleDescription> modules = findModules();
-        final Collection<Service> created = createServices(modules);
-        created.forEach(registry::register);
-    }
-
     /**
      * Stops the services.
      */
@@ -67,6 +56,29 @@ public final class Container {
         running = false;
         waitUntilStopped();
         LOG.info("Container stopped.");
+    }
+
+    private void registerServices() {
+        final Collection<ModuleDescription> modules = findModules();
+        final Collection<Service> created = createServices(modules);
+        created.forEach(registry::register);
+    }
+
+    private void injectRequiredServices() {
+        final Injector injector = new Injector(registry);
+        registry.findAll().forEach(injector::injectRequired);
+    }
+
+    private void loop() {
+        while (running) {
+            try {
+                LOG.info("Container is running.");
+                Thread.sleep(5_000);
+            } catch (final InterruptedException e) {
+                LOG.error(e.getMessage(), e);
+                return;
+            }
+        }
     }
 
     private void waitUntilStopped() {
@@ -91,20 +103,9 @@ public final class Container {
     private Collection<ModuleDescription> findModules() {
         LOG.debug("Find modules...");
         final Collection<ModuleDescription> modules = new ModuleFinder().find();
-        LOG.debug("Found {} modules.", modules.size());
+        LOG.debug("Found {} modules: {}.",
+            modules.size(), modules.stream().map(ModuleDescription::format).collect(Collectors.joining(", ")));
         return modules;
-    }
-
-    private void loop() {
-        while (running) {
-            try {
-                LOG.info("Container is running.");
-                Thread.sleep(1_000);
-            } catch (final InterruptedException e) {
-                LOG.error(e.getMessage(), e);
-                return;
-            }
-        }
     }
 
 }

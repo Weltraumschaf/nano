@@ -28,13 +28,14 @@ final class ServiceFactory {
      */
     Collection<Service> create(final ModuleDescription module) {
         Validate.notNull(module, "module");
-        LOG.debug("Create services for module {} ({}) ...", module.getName(), module.getId());
-        final Collection<Service> services = findServices(module.getServices());
-        LOG.debug("Found {} service to create ...", services.size());
+        LOG.debug("Create services for module {} ...", module.format());
+        final Collection<Service> services = create(module.getServices());
+        LOG.debug("Created {} service: {}.",
+            services.size(), services.stream().map(Service::toString).collect(Collectors.joining(", ")));
         return services;
     }
 
-    private Collection<Service> findServices(final Collection<Class<? extends Service>> interfaces) {
+    private Collection<Service> create(final Collection<Class<? extends Service>> interfaces) {
         return interfaces.stream().map(api -> {
             final Iterator<? extends Service> iterator = ServiceLoader.load(api).iterator();
 
