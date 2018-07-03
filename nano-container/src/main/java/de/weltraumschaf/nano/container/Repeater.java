@@ -73,7 +73,7 @@ final class Repeater {
         Validate.notNull(repeated, "repeated");
         int currentRetries = 1;
 
-        while (true) {
+        do {
             Thread.sleep(this.waitMillis);
 
             if (repeated.call()) {
@@ -85,7 +85,7 @@ final class Repeater {
             }
 
             ++currentRetries;
-        }
+        } while (true);
 
         return false;
     }

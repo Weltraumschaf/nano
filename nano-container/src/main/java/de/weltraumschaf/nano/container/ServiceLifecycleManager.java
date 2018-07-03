@@ -106,8 +106,15 @@ final class ServiceLifecycleManager {
 
         try {
             final Repeater repeater = Repeater.of(MILLIS_TO_WAIT, MAX_RETRIES);
-            repeater.execute(new ServiceStopper(services.findAutoStarting()));
-            LOG.debug("All services stopped.");
+            final boolean successful = repeater.execute(
+                new ServiceStopper(services.findAutoStarting()));
+
+            if (successful) {
+                LOG.debug("All services stopped.");
+            } else {
+                LOG.warn("Not all services stopped after {}ms wait and {} retries!",
+                    repeater.getWaitMillis(), repeater.getMaxRetries());
+            }
         } catch (final Exception e) {
             LOG.error(e.getMessage(), e);
         }
