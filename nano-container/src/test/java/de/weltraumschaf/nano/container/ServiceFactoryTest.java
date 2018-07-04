@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertThat;
 
 /**
- * Tests for {@link ServiceFactory}.
+ * Tests for {@link DefaultServiceFactory}.
  *
  * @author Sven Strittmatter
  * @since 1.0.0
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThat;
 public class ServiceFactoryTest {
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
-    private final ServiceFactory sut = new ServiceFactory();
+    private final ServiceFactory sut = new DefaultServiceFactory();
 
     @Test(expected = NullPointerException.class)
     public void create_notNull() {

@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
  */
 public final class Container {
     private static final Logger LOG = LoggerFactory.getLogger(Container.class);
+    private static final int SLEEP_MILLIS = 1_000;
 
     private final ContainerContext context;
     /**
@@ -70,7 +71,8 @@ public final class Container {
      */
     public void stop() {
         if (!running) {
-            throw new IllegalStateException("Container never started!");
+            LOG.warn("Called stp, but container never started!");
+            return;
         }
 
         LOG.info("Container is stopping...");
@@ -80,10 +82,50 @@ public final class Container {
         LOG.info("Container stopped.");
     }
 
+    /**
+     * Whether the container is running or not.
+     * <p>
+     * If this method returns {@code false} does not mean that {@link #isStopped()} returns {@code true} immediately.
+     * It may take some time until the container has reached ful stop.
+     * </p>
+     *
+     * @return {@code true} is running, else {@code false}
+     */
+    boolean isRunning() {
+        return running;
+    }
+
+    /**
+     * Whether the container has reached completely stop.
+     *
+     * @return {@code true} if the container has shut down everything including itself, else {@code false}
+     */
+    boolean isStopped() {
+        return stopped;
+    }
+
     private void registerServices() {
         final Collection<ModuleDescription> modules = findModules();
         final Collection<Service> created = createServices(modules);
         created.forEach(service -> context.getRegistry().register(service));
+    }
+
+    private Collection<ModuleDescription> findModules() {
+        LOG.debug("Find modules...");
+        final Collection<ModuleDescription> modules = context.getFinder().find();
+        final String modulesAsString = modules.stream()
+            .map(ModuleDescription::format)
+            .collect(Collectors.joining(", "));
+        LOG.debug("Found {} modules: {}.",
+            modules.size(), modulesAsString);
+        return modules;
+    }
+
+    private Collection<Service> createServices(final Collection<ModuleDescription> modules) {
+        return modules.stream()
+            .map(module -> context.getFactory().create(module))
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
     }
 
     private void injectRequiredServices() {
@@ -93,46 +135,25 @@ public final class Container {
 
     private void loop() {
         while (running) {
-            try {
-                LOG.info("Container is running.");
-                Thread.sleep(5_000);
-            } catch (final InterruptedException e) {
-                LOG.error(e.getMessage(), e);
-                Thread.currentThread().interrupt();
-                return;
-            }
+            LOG.info("Container is running.");
+            sleep();
         }
     }
 
     private void waitUntilStopped() {
         while (!stopped) {
-            try {
-                LOG.debug("Wait for stopping ...");
-                Thread.sleep(1_000);
-            } catch (final InterruptedException e) {
-                LOG.error(e.getMessage(), e);
-                Thread.currentThread().interrupt();
-            }
+            LOG.debug("Wait for stopping ...");
+            sleep();
         }
     }
 
-    private Collection<Service> createServices(final Collection<ModuleDescription> modules) {
-        final ServiceFactory factory = new ServiceFactory();
-        return modules.stream()
-            .map(factory::create)
-            .flatMap(Collection::stream)
-            .collect(Collectors.toList());
-    }
 
-    private Collection<ModuleDescription> findModules() {
-        LOG.debug("Find modules...");
-        final Collection<ModuleDescription> modules = new ModuleFinder().find();
-        final String modulesAsString = modules.stream()
-            .map(ModuleDescription::format)
-            .collect(Collectors.joining(", "));
-        LOG.debug("Found {} modules: {}.",
-            modules.size(), modulesAsString);
-        return modules;
+    private void sleep() {
+        try {
+            Thread.sleep(SLEEP_MILLIS);
+        } catch (final InterruptedException e) {
+            LOG.error(e.getMessage(), e);
+            Thread.currentThread().interrupt();
+        }
     }
-
 }

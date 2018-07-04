@@ -12,13 +12,13 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 /**
- * Tests for {@link ModuleFinder}.
+ * Tests for {@link DefaultModuleFinder}.
  *
  * @author Sven Strittmatter
  * @since 1.0.0
  */
-public class ModuleFinderTest {
-    private final ModuleFinder sut = new ModuleFinder();
+public class DefaultModuleFinderTest {
+    private final DefaultModuleFinder sut = new DefaultModuleFinder();
 
     @Test
     public void find() {
