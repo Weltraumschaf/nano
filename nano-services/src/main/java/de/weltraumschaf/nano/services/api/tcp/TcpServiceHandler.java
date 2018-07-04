@@ -1,4 +1,4 @@
-package de.weltraumschaf.nano.example.module1.api.tcp;
+package de.weltraumschaf.nano.services.api.tcp;
 
 /**
  * Handles TCP requests.

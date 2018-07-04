@@ -23,19 +23,14 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>de.weltraumschaf.commons</groupId>
-            <artifactId>application</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.weltraumschaf.commons</groupId>
-            <artifactId>jcommander</artifactId>
-        </dependency>
+        <!-- Nano container dependencies: -->
         <dependency>
             <groupId>de.weltraumschaf.nano</groupId>
             <artifactId>nano-container</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <!-- Inter project dependencies: -->
         <dependency>
             <groupId>de.weltraumschaf.nano.example</groupId>
             <artifactId>nano-example-module1-api</artifactId>
@@ -45,6 +40,16 @@
             <groupId>de.weltraumschaf.nano.example</groupId>
             <artifactId>nano-example-module1-impl</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <!-- Other third party dependencies: -->
+        <dependency>
+            <groupId>de.weltraumschaf.commons</groupId>
+            <artifactId>application</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.weltraumschaf.commons</groupId>
+            <artifactId>jcommander</artifactId>
         </dependency>
 
         <dependency>

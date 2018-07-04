@@ -19,10 +19,17 @@
 
     <dependencies>
         <dependency>
+            <groupId>de.weltraumschaf.nano</groupId>
+            <artifactId>nano-services</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>nano-example-module1-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

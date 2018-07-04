@@ -1,11 +1,10 @@
-package de.weltraumschaf.nano.example.module1.impl.tcp;
+package de.weltraumschaf.nano.services.impl.tcp;
 
 import de.weltraumschaf.commons.validate.Validate;
 import de.weltraumschaf.nano.api.service.Service;
-import de.weltraumschaf.nano.example.module1.api.tcp.TcpService;
-import de.weltraumschaf.nano.example.module1.api.tcp.TcpServiceConfiguration;
-import de.weltraumschaf.nano.example.module1.api.tcp.TcpServiceHandler;
-import de.weltraumschaf.nano.example.module1.impl.DefaultEchoService;
+import de.weltraumschaf.nano.services.api.tcp.TcpService;
+import de.weltraumschaf.nano.services.api.tcp.TcpServiceConfiguration;
+import de.weltraumschaf.nano.services.api.tcp.TcpServiceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class DefaultTcpService implements TcpService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultEchoService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultTcpService.class);
     private final Map<Service, TcpServiceHandler> handlers = new ConcurrentHashMap<>();
     private Map<Service, TcpServiceConfiguration> configurations = new ConcurrentHashMap<>();
     private Map<Service, TcpServer> servers = new ConcurrentHashMap<>();

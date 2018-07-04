@@ -1,4 +1,4 @@
-package de.weltraumschaf.nano.example.module1.impl.tcp;
+package de.weltraumschaf.nano.services.impl.tcp;
 
 import org.junit.Test;
 

@@ -3,8 +3,8 @@ package de.weltraumschaf.nano.example.module1.impl;
 import de.weltraumschaf.nano.api.service.Require;
 import de.weltraumschaf.nano.api.service.ServiceContext;
 import de.weltraumschaf.nano.example.module1.api.EchoService;
-import de.weltraumschaf.nano.example.module1.api.tcp.TcpService;
-import de.weltraumschaf.nano.example.module1.api.tcp.TcpServiceConfiguration;
+import de.weltraumschaf.nano.services.api.tcp.TcpService;
+import de.weltraumschaf.nano.services.api.tcp.TcpServiceConfiguration;
 
 /**
  * Default implementation of an echoe server.

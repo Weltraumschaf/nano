@@ -24,6 +24,6 @@ public class DescriberTest {
         assertThat(description.getId(), is(not(nullValue())));
         assertThat(description.getName(), is("Example Module 1"));
         assertThat(description.getDescription(), is(""));
-        assertThat(description.getServices(), hasSize(8));
+        assertThat(description.getServices(), hasSize(7));
     }
 }
