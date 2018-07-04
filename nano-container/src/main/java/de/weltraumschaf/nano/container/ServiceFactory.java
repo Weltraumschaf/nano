@@ -28,10 +28,13 @@ final class ServiceFactory {
      */
     Collection<Service> create(final ModuleDescription module) {
         Validate.notNull(module, "module");
-        LOG.debug("Create services for module {} ...", module.format());
+        String moduleFormatted = module.format();
+        LOG.debug("Create services for module {} ...", moduleFormatted);
         final Collection<Service> services = create(module.getServices());
-        LOG.debug("Created {} service: {}.",
-            services.size(), services.stream().map(Service::toString).collect(Collectors.joining(", ")));
+        final String servicesAsString = services.stream()
+            .map(Service::toString)
+            .collect(Collectors.joining(", "));
+        LOG.debug("Created {} service: {}.", services.size(), servicesAsString);
         return services;
     }
 

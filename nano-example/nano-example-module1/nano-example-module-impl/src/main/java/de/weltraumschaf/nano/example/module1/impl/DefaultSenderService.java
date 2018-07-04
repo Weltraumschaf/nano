@@ -30,6 +30,7 @@ public final class DefaultSenderService extends LoopingService implements Sender
             Thread.sleep(5_000);
         } catch (final InterruptedException e) {
             LOG.error(e.getMessage(), e);
+            Thread.currentThread().interrupt();
         }
     }
 

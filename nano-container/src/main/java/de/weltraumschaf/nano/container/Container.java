@@ -98,6 +98,7 @@ public final class Container {
                 Thread.sleep(5_000);
             } catch (final InterruptedException e) {
                 LOG.error(e.getMessage(), e);
+                Thread.currentThread().interrupt();
                 return;
             }
         }
@@ -110,6 +111,7 @@ public final class Container {
                 Thread.sleep(1_000);
             } catch (final InterruptedException e) {
                 LOG.error(e.getMessage(), e);
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -125,8 +127,11 @@ public final class Container {
     private Collection<ModuleDescription> findModules() {
         LOG.debug("Find modules...");
         final Collection<ModuleDescription> modules = new ModuleFinder().find();
+        final String modulesAsString = modules.stream()
+            .map(ModuleDescription::format)
+            .collect(Collectors.joining(", "));
         LOG.debug("Found {} modules: {}.",
-            modules.size(), modules.stream().map(ModuleDescription::format).collect(Collectors.joining(", ")));
+            modules.size(), modulesAsString);
         return modules;
     }
 
