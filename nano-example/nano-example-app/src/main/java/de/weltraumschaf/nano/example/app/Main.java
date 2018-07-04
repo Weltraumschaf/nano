@@ -15,7 +15,6 @@ public final class Main extends InvokableAdapter {
     private static final String BASE_PACKAGE = "/de/weltraumschaf/nano/example/app";
 
     private final JCommanderImproved<CliOptions> cliArgs = new JCommanderImproved<>(Constants.PROGRAM_NAME, CliOptions.class);
-    private final Container container = new Container();
 
     private Main(final String[] args) {
         super(args);
@@ -47,6 +46,7 @@ public final class Main extends InvokableAdapter {
             exit(ExitCodeImpl.OK);
         }
 
+        final Container container = new Container();
         registerShutdownHook(container::stop);
         container.start();
     }

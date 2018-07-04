@@ -34,10 +34,12 @@ public final class DefaultAutoService implements AutoService {
         while (running) {
             try {
                 int wait = random.nextInt(5_000);
-                LOG.info("Auto (wait {}): {} ...", wait, helper.help());
+                final String help = helper.help();
+                LOG.info("Auto (wait {} ms): {} ...", wait, help);
                 Thread.sleep(wait);
             } catch (final InterruptedException e) {
                 LOG.error(e.getMessage(), e);
+                Thread.currentThread().interrupt();
             }
         }
 

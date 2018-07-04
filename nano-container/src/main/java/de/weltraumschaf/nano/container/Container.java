@@ -1,5 +1,6 @@
 package de.weltraumschaf.nano.container;
 
+import de.weltraumschaf.commons.validate.Validate;
 import de.weltraumschaf.nano.api.ModuleDescription;
 import de.weltraumschaf.nano.api.service.Service;
 import org.slf4j.Logger;
@@ -17,11 +18,32 @@ import java.util.stream.Collectors;
 public final class Container {
     private static final Logger LOG = LoggerFactory.getLogger(Container.class);
 
-    private final DefaultMessageBus messages = new DefaultMessageBus();
-    private final ServiceRegistry registry = new ServiceRegistry();
-    private ServiceLifecycleManager services = new ServiceLifecycleManager(registry);
+    private final ContainerContext context;
+    /**
+     * Volatile because must be recognized over multiple threads.
+     */
     private volatile boolean running;
+    /**
+     * Volatile because must be recognized over multiple threads.
+     */
     private volatile boolean stopped;
+
+    /**
+     * API constructor for client code to create a container.
+     */
+    public Container() {
+        this(ContainerContext.create());
+    }
+
+    /**
+     * Dedicated constructor.
+     *
+     * @param context not {@code null}
+     */
+    Container(final ContainerContext context) {
+        super();
+        this.context = Validate.notNull(context, "context");
+    }
 
     /**
      * Start the container.
@@ -35,7 +57,7 @@ public final class Container {
         registerServices();
         injectRequiredServices();
 
-        this.services.start(messages);
+        context.getServices().start(context.getMessages());
         LOG.info("Container started.");
 
         loop();
@@ -52,7 +74,7 @@ public final class Container {
         }
 
         LOG.info("Container is stopping...");
-        services.stop();
+        context.getServices().stop();
         running = false;
         waitUntilStopped();
         LOG.info("Container stopped.");
@@ -61,12 +83,12 @@ public final class Container {
     private void registerServices() {
         final Collection<ModuleDescription> modules = findModules();
         final Collection<Service> created = createServices(modules);
-        created.forEach(registry::register);
+        created.forEach(service -> context.getRegistry().register(service));
     }
 
     private void injectRequiredServices() {
-        final Injector injector = new Injector(registry);
-        registry.findAll().forEach(injector::injectRequired);
+        final Injector injector = new Injector(context.getRegistry());
+        context.getRegistry().findAll().forEach(injector::injectRequired);
     }
 
     private void loop() {
