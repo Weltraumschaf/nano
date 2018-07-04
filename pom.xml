@@ -18,6 +18,7 @@
     <packaging>pom</packaging>
 
     <name>Nano :: Reactor</name>
+    <description>Nano is a simple service container inspired by OSGi.</description>
 
     <developers>
         <developer>
@@ -77,6 +78,7 @@
     <modules>
         <module>nano-api</module>
         <module>nano-container</module>
+        <module>nano-services</module>
         <module>nano-example</module>
     </modules>
 

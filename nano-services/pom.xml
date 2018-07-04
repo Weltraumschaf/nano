@@ -12,26 +12,23 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>nano-api</artifactId>
+    <artifactId>nano-services</artifactId>
     <packaging>jar</packaging>
 
-    <name>Nano :: API</name>
-    <description>This module provides the Nano Container API to implement own
-        services for an application.
+    <name>Nano :: Services</name>
+    <description>This module contains some generic reusable services for the
+        Nano Container.
     </description>
 
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>nano-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>de.weltraumschaf.commons</groupId>
             <artifactId>validate</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -50,6 +47,16 @@
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.weltraumschaf.commons</groupId>
+            <artifactId>testing</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

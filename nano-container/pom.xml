@@ -16,6 +16,9 @@
     <packaging>jar</packaging>
 
     <name>Nano :: Container</name>
+    <description>This module contains the Nano Container core container
+        implementation.
+    </description>
 
     <dependencies>
         <dependency>
