@@ -2,15 +2,15 @@ package de.weltraumschaf.nano.api;
 
 import de.weltraumschaf.nano.api.service.Service;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link ModuleDescription}.
@@ -18,7 +18,7 @@ import static org.junit.Assert.assertThat;
  * @since 1.0.0
  * @author Sven Strittmatter
  */
-public class ModuleDescriptionTest {
+class ModuleDescriptionTest {
 
     private final UUID id = UUID.fromString("7f0fbe47-87bd-4280-b9f7-b7badaa81f43");
     private final Class<Foo> foo = Foo.class;
@@ -34,33 +34,33 @@ public class ModuleDescriptionTest {
         services);
 
     @Test
-    public void equalsAndHashCode() {
+    void equalsAndHashCode() {
         EqualsVerifier.forClass(ModuleDescription.class).verify();
     }
 
     @Test
-    public void getId() {
+    void getId() {
         assertThat(sut.getId(), is(id));
     }
 
     @Test
-    public void getName() {
+    void getName() {
         assertThat(sut.getName(), is("name"));
     }
 
     @Test
-    public void getDescription() {
+    void getDescription() {
         assertThat(sut.getDescription(), is("desc"));
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void getServices() {
+    void getServices() {
         assertThat(sut.getServices(), containsInAnyOrder(foo, bar, baz));
     }
 
     @Test
-    public void format() {
+    void format() {
         assertThat(sut.format(), is("'name' (7f0fbe47-87bd-4280-b9f7-b7badaa81f43)"));
     }
 
